@@ -1,4 +1,14 @@
 import { Schema, model } from 'mongoose'
+import { z } from 'zod'
+
+export const zodHealthInfoSchema = z.object({
+  cardiorespiratoryDisease: z.string().optional(),
+  surgery: z.string().optional(),
+  allergy: z.string().optional(),
+  preExistingCondition: z.string().optional(),
+  medicineInUse: z.string().optional(),
+
+})
 
 const HealthInfoSchema = new Schema({
   cardiorespiratoryDisease: {

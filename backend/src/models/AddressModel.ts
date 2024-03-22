@@ -1,4 +1,16 @@
-import { Schema, model } from 'mongoose'
+import { Schema, model, HydratedDocument } from 'mongoose'
+import { z } from 'zod'
+
+export const zodAddressSchema = z.object({
+  cep: z.string(),
+  street: z.string(),
+  num: z.string(),
+  city: z.string(),
+  uf: z.string(),
+  createdAt: z.date(),
+})
+
+export type Address = z.infer<typeof zodAddressSchema>
 
 const AddressSchema = new Schema({
   cep: {type: String, required: true},

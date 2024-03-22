@@ -1,8 +1,27 @@
-import { Schema, model } from 'mongoose'
+import { Document, Schema, Types, model } from 'mongoose'
+import { z } from 'zod'
+import { zodAddressSchema } from './AddressModel'
+import { zodHealthInfoSchema } from './HealthInfo'
+
+export const zodUserSchema = z.object({
+  name: z.string(),
+  lastName: z.string(),
+  gender: z.string(),
+  password: z.string(),
+  email: z.string(),
+  cpf: z.string(),
+  data_nascimento: z.date(),
+  address: zodAddressSchema,
+  healthInfo: z.object(zodHealthInfoSchema.shape).optional(),
+  createdAt: z.date(),
+})
+
+export type User = z.infer<typeof zodUserSchema>
 
 const UserSchema = new Schema({
   name: {
-    type: String,
+    type: String
+    ,
     required: true
   },
   lastName: {
