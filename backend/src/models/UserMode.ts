@@ -1,7 +1,6 @@
 import { Document, Schema, Types, model } from 'mongoose'
 import { z } from 'zod'
 import { zodAddressSchema } from './AddressModel'
-import { zodHealthInfoSchema } from './HealthInfo'
 
 export const zodUserSchema = z.object({
   name: z.string(),
@@ -12,7 +11,13 @@ export const zodUserSchema = z.object({
   cpf: z.string(),
   data_nascimento: z.date(),
   address: zodAddressSchema,
-  healthInfo: z.object(zodHealthInfoSchema.shape).optional(),
+  healthInfo: z.object({
+    cardiorespiratoryDisease: z.string().optional(),
+    surgery: z.string().optional(),
+    allergy: z.string().optional(),
+    preExistingCondition: z.string().optional(),
+    medicineInUse: z.string().optional(),
+  }).optional(),
   createdAt: z.date(),
 })
 
@@ -56,8 +61,28 @@ const UserSchema = new Schema({
     required: true
   },
   healthInfo: {
-    type: Schema.Types.ObjectId,
-    ref: 'HealthInfo',
+    type: {
+      cardiorespiratoryDisease: {
+        type: String,
+        required: false
+      },
+      surgery: {
+        type: String,
+        required: false
+      },
+      allergy: {
+        type: String,
+        required: false
+      },
+      preExistingCondition: {
+        type: String,
+        required: false
+      },
+      medicineInUse: {
+        type: String,
+        required: false
+      },
+    },
     required: false
   },
   createdAt: {
