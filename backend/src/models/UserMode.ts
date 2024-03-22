@@ -1,22 +1,40 @@
 import { Schema, model } from 'mongoose'
 
 const UserSchema = new Schema({
-  name: String,
-  lastName: String,
-  gender: String,
-  password: String,
+  name: {
+    type: String,
+    required: true
+  },
+  lastName: {
+    type: String,
+    required: true
+  },
+  gender: {
+    type: String,
+    required: true
+  },
+  password: {
+    type: String,
+    required: true
+  },
   email: {
     type: String,
+    required: true,
     unique: true
   },
   cpf: {
     type: String,
+    required: true,
     unique: true
   },
-  data_nascimento: Date,
+  data_nascimento: {
+    type: Date,
+    required: true
+  },
   address: {
     type: Schema.Types.ObjectId,
-    ref: 'Address'
+    ref: 'Address',
+    required: true
   },
   healthInfo: {
     type: Schema.Types.ObjectId,
