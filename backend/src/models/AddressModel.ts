@@ -1,7 +1,8 @@
-import { Schema, model, HydratedDocument } from 'mongoose'
+import { Schema, Types, model } from 'mongoose'
 import { z } from 'zod'
 
 export const zodAddressSchema = z.object({
+  _id: z.instanceof(Types.ObjectId).optional(),
   cep: z.string(),
   street: z.string(),
   num: z.string(),

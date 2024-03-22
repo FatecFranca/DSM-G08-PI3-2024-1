@@ -1,12 +1,65 @@
 import { Request, Response } from 'express'
-import { userModel } from '../models/UserMode'
+import mongoose, { HydratedDocument } from 'mongoose'
+import { Address, addressModel } from '../models/AddressModel'
+import { userModel, zodUserSchema } from '../models/UserMode'
 
 export const userController = {
   async create(req: Request, res: Response) {
-    const body = req.body
-    console.log(body)
-    const createdUser = await userModel.create(body)
+    const userData = zodUserSchema.parse(req.body)
 
-    return res.status(201).json(createdUser)
+    const existUserWithEmail = await userModel.findOne({
+      email: userData.email
+    })
+    if (existUserWithEmail) {
+      return res.status(400).json({
+        error: 'Already exists a user with this email'
+      })
+    }
+    const existUserWithCpf = await userModel.findOne({
+      cpf: userData.cpf
+    })
+    if (existUserWithCpf) {
+      return res.status(400).json({
+        error: 'Already exists a user with this cpf'
+      })
+    }
+
+    const { address: addressData, ...userModelData } = userData
+
+    const session = await mongoose.startSession()
+    session.startTransaction()
+    try {
+
+      let address: HydratedDocument<Address>
+      const existingAddress = await addressModel.findOne({
+        cep: addressData.cep,
+        num: addressData.num,
+      })
+      if (existingAddress) {
+        address = existingAddress
+      } else {
+        address = new addressModel(addressData)
+        address.save({
+          session
+        })
+      }
+  
+      const createdUser = new userModel({
+        ...userModelData,
+        address: address._id,
+      })
+      createdUser.save({
+        session
+      })
+  
+      session.commitTransaction()
+      return res.status(201).json(createdUser)
+    } catch (error) {
+      session.abortTransaction()
+      session.endSession()
+      return res.status(400).json({
+        error: 'Error to create a user'
+      })
+    }
   },
 }
