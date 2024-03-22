@@ -23,4 +23,4 @@ const HealthInfoSchema = new Schema({
   },
 })
 
-export const HealthInfoModel = model('HealthInfo', HealthInfoSchema)
+export const healthInfoModel = model('HealthInfo', HealthInfoSchema)

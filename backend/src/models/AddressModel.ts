@@ -12,4 +12,4 @@ const AddressSchema = new Schema({
   }
 })
 
-export const AddressModel = model('Address', AddressSchema)
+export const addressModel = model('Address', AddressSchema)
