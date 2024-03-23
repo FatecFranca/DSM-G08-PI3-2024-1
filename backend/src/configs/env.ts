@@ -1,17 +1,22 @@
 import dotenv from 'dotenv'
 import { z } from 'zod'
 
-if (!process.env?.ENV || process.env.ENV === 'dev') {
-  dotenv.config()
-  process.env.ENV
-} else if (process.env.ENV !== 'test'){
+const environment = process.env.NODE_ENV || 'dev'
+if (environment === 'dev') {
+  dotenv.config({
+    path: '.env',
+  })
+} else if (environment === 'test') {
+  dotenv.config({
+    path: '.env.test',
+  })
+} else {
   throw Error('Environment not supported')
 }
 
 export const envSchema = z.object({
   PORT: z.string().default('8080'),
-  DATABASE_URL: z.string(),
-  ENV: z.string()
+  DATABASE_URL: z.string()
 })
 
 export const env = envSchema.parse(process.env)

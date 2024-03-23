@@ -21,6 +21,7 @@ export const zodUserSchema = z.object({
   }).optional()
 })
 
+
 export type User = z.infer<typeof zodUserSchema>
 
 const UserSchema = new Schema({
