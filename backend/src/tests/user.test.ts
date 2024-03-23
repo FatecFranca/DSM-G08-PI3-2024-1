@@ -1,5 +1,6 @@
 import supertest from 'supertest'
 import server from '../configs/server'
+import { addressModel } from '../models/AddressModel'
 import { User, userModel } from '../models/UserMode'
 
 describe('User endpoint tests suite', () => {
@@ -53,6 +54,16 @@ describe('User endpoint tests suite', () => {
       })
     })
 
+    it('should create user even if healthInfo is not provided', async () => {
+      delete user.healthInfo
+      const { body } = await supertest(server)
+        .post('/users')
+        .send(user)
+        .expect(201)
+      const savedUser = await userModel.findById(body._id)
+      expect(savedUser).toBeTruthy()
+    })
+
     it('should not save user password as plain text', async () => {
       const { body } = await supertest(server)
         .post('/users')
@@ -60,6 +71,59 @@ describe('User endpoint tests suite', () => {
         .expect(201)
       const savedUser = await userModel.findById(body._id)
       expect(savedUser?.password).not.toBe(user.password)
+    })
+
+    it('should return 400 if already exists a user with this email', async () => {
+      const address = await addressModel.create(user.address)
+      const existentUser = new userModel({
+        ...user,
+        address: address._id
+      })
+
+      await existentUser.save()
+      
+      await supertest(server)
+        .post('/users')
+        .send(user)
+        .expect(400)
+    })
+
+    it('should return 400 if already exists a user with this cpf', async () => {
+      const address = await addressModel.create(user.address)
+      const existentUser = new userModel({
+        ...user,
+        address: address._id
+      })
+
+      await existentUser.save()
+      
+      await supertest(server)
+        .post('/users')
+        .send({
+          ...user,
+          email: 'other@email.com'
+        })
+        .expect(400)
+    })
+
+    it.skip('should return 400 if pass invalid cpf', async () => {
+      await supertest(server)
+        .post('/users')
+        .send({
+          ...user,
+          cpf: '123.456.789-09'
+        })
+        .expect(400)
+    })
+
+    it('should return 400 if pass invalid email', async () => {
+      return supertest(server)
+        .post('/users')
+        .send({
+          ...user,
+          email: 'invalid_email'
+        })
+        .expect(400)
     })
   })
 })

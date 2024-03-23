@@ -8,7 +8,7 @@ export const zodUserSchema = z.object({
   lastName: z.string(),
   gender: z.string(),
   password: z.string(),
-  email: z.string(),
+  email: z.string().email(),
   cpf: z.string(),
   data_nascimento: z.coerce.date(),
   address: zodAddressSchema,
