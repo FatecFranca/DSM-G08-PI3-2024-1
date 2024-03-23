@@ -14,9 +14,11 @@ if (environment === 'dev') {
   throw Error('Environment not supported')
 }
 
+const ENVZodType = environment === 'dev'? z.literal('dev') : z.literal('test')
 export const envSchema = z.object({
   PORT: z.string().default('8080'),
-  DATABASE_URL: z.string()
+  DATABASE_URL: z.string(),
+  ENV: ENVZodType,
 })
 
 export const env = envSchema.parse(process.env)
