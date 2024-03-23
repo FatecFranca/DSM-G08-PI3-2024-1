@@ -10,7 +10,7 @@ export const zodUserSchema = z.object({
   password: z.string(),
   email: z.string(),
   cpf: z.string(),
-  data_nascimento: z.date(),
+  data_nascimento: z.coerce.date(),
   address: zodAddressSchema,
   healthInfo: z.object({
     cardiorespiratoryDisease: z.string().optional(),
@@ -18,8 +18,7 @@ export const zodUserSchema = z.object({
     allergy: z.string().optional(),
     preExistingCondition: z.string().optional(),
     medicineInUse: z.string().optional(),
-  }).optional(),
-  createdAt: z.date(),
+  }).optional()
 })
 
 export type User = z.infer<typeof zodUserSchema>
@@ -85,10 +84,6 @@ const UserSchema = new Schema({
       },
     },
     required: false
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
   }
 })
 
