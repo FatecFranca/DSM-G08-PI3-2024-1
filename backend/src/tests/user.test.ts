@@ -3,16 +3,7 @@ import server from '../configs/server'
 import { User, userModel } from '../models/UserMode'
 
 describe('User endpoint tests suite', () => {
-  // beforeAll(async () => {
-  //   console.log(`Connecting to database: ${env.DATABASE_URL}`)
-  //   return mongoose.connect(env.DATABASE_URL)
-  // })
 
-  // afterAll(async () => {
-  //   console.log('Closing connection...')
-  //   return mongoose.disconnect()
-  // })
-  
   let user: User
   beforeEach(async () => {
     user = {
@@ -62,7 +53,7 @@ describe('User endpoint tests suite', () => {
       })
     })
 
-    it.skip('should not save user password as plain text', async () => {
+    it('should not save user password as plain text', async () => {
       const { body } = await supertest(server)
         .post('/users')
         .send(user)

@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import mongoose, { HydratedDocument } from 'mongoose'
+import bcrypt from 'bcrypt'
 import { Address, addressModel } from '../models/AddressModel'
 import { userModel, zodUserSchema } from '../models/UserMode'
 
@@ -43,9 +44,10 @@ export const userController = {
           session
         })
       }
-  
+      const hashedPassword = bcrypt.hashSync(userModelData.password, 10)
       const createdUser = new userModel({
         ...userModelData,
+        password: hashedPassword,
         address: address._id,
       })
       createdUser.save({
