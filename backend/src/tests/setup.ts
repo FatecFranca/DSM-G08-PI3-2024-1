@@ -2,7 +2,7 @@ import { env } from '../configs/env'
 import mongoose from 'mongoose'
 
 beforeAll(async () => {
-  console.log(env)
+  console.log('Connecting to database...')
   return mongoose.connect(env.DATABASE_URL)
 })
 

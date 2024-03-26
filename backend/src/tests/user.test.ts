@@ -208,4 +208,24 @@ describe('User endpoint tests suite', () => {
       expect(body).toEqual(expectedUser)
     })
   })
+
+  describe('DELETE /users/:id', () => {
+    let id: string
+    beforeEach(async () => {
+      const { body } = await supertest(server)
+        .post('/users')
+        .send(user)
+      id = body._id
+      return
+    })
+
+    it('should return 200 and delete user', async () => {
+      await supertest(server)
+        .delete(`/users/${id}`)
+        .expect(200)
+      
+      const savedUser = await userModel.findById(id)
+      expect(savedUser).toBeFalsy()
+    })
+  })
 })
