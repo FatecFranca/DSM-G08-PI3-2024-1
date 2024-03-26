@@ -1,4 +1,3 @@
-import mongoose from 'mongoose'
 import supertest from 'supertest'
 import server from '../configs/server'
 import { addressModel } from '../models/AddressModel'
@@ -7,6 +6,9 @@ import { User, userModel } from '../models/UserMode'
 describe('User endpoint tests suite', () => {
 
   let user: User
+  let expectedAddress: any
+  let expectedUser: any
+
   beforeEach(async () => {
     user = {
       name: 'any_name',
@@ -31,7 +33,32 @@ describe('User endpoint tests suite', () => {
         surgery: 'any_surgery',
       }
     }
+
+    expectedAddress = {
+      ...user.address,
+      _id: expect.any(String),
+      __v: expect.any(Number)
+    }
+
+    expectedUser = {
+      ...user,
+      _id: expect.any(String),
+      address: expect.objectContaining({
+        ...user.address,
+        _id: expect.any(String)
+      }),
+      data_nascimento: user.data_nascimento.toISOString(),
+      healthInfo: expect.objectContaining(user.healthInfo),
+      password: expect.any(String),
+      __v: expect.any(Number)
+    }
+
     return userModel.deleteMany({})
+  })
+
+  afterEach(async () => {
+    await userModel.deleteMany({})
+    await addressModel.deleteMany({})
   })
 
   describe('POST /users', () => {
@@ -42,17 +69,7 @@ describe('User endpoint tests suite', () => {
         .expect(201)
       const savedUser = await userModel.findById(response.body._id)
       expect(savedUser).toBeTruthy()
-      expect(response.body).toEqual({
-        ...user,
-        _id: expect.any(String),
-        address: expect.any(String),
-        data_nascimento: user.data_nascimento.toISOString(),
-        password: expect.any(String),
-        healthInfo: {
-          ...user.healthInfo,
-          _id: expect.any(String)
-        }
-      })
+      expect(response.body).toEqual(expectedUser)
     })
 
     it('should create user even if healthInfo is not provided', async () => {
@@ -139,14 +156,16 @@ describe('User endpoint tests suite', () => {
     })
 
     it('should return 200 and updated user', async () => {
+      const newName = 'new_name'
+      const newAddressName = 'new_street'
       const updatedUser = {
         ...user,
-        name: 'new_name',
+        name: newName,
         email: undefined,
         password: undefined,
         address: {
           ...user.address,
-          street: 'new_street'
+          street: newAddressName
         }
       }
       const { body } = await supertest(server)
@@ -154,11 +173,36 @@ describe('User endpoint tests suite', () => {
         .send(updatedUser)
         .expect(200)
       const savedUser = await userModel.findById(id)
-      const savedAddress = await addressModel.findById(savedUser?.address)
-      expect(body.name).toBe(updatedUser.name)
-      expect(savedUser?.name).toBe(updatedUser.name)
-      expect(body.address).toBe(savedAddress?._id.toString())
-      expect(savedAddress?.street).toBe(updatedUser.address.street)
+        .populate('address')
+
+      expect(body).toEqual({
+        ...expectedUser,
+        name: newName,
+        address: {
+          ...expectedAddress,
+          street: newAddressName
+        }
+      })
+
+    })
+  })
+
+  describe('GET /users/:id', () => {
+    let id: string
+    beforeEach(async () => {
+      const { body } = await supertest(server)
+        .post('/users')
+        .send(user)
+      id = body._id
+      return
+    })
+
+    it('should return 200 and user with address', async () => {
+      const { body } = await supertest(server)
+        .get(`/users/${id}`)
+        .expect(200)
+      
+      expect(body).toEqual(expectedUser)
     })
   })
 })

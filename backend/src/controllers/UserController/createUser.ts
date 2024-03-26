@@ -27,8 +27,6 @@ export const createUser = async (req: Request, res: Response) => {
 
   const { address: addressData, ...userModelData } = userData
 
-  const session = await mongoose.startSession()
-  session.startTransaction()
   try {
 
     let address: HydratedDocument<Address>
@@ -40,25 +38,20 @@ export const createUser = async (req: Request, res: Response) => {
       address = existingAddress
     } else {
       address = new addressModel(addressData)
-      address.save({
-        session
-      })
+      address.save()
     }
     const hashedPassword = bcrypt.hashSync(userModelData.password, 10)
-    const createdUser = new userModel({
+    const user = new userModel({
       ...userModelData,
       password: hashedPassword,
       address: address._id,
     })
-    createdUser.save({
-      session
-    })
+    await user.save()
 
-    session.commitTransaction()
+    const createdUser = await userModel.findById(user._id).populate('address')
+
     return res.status(201).json(createdUser)
   } catch (error) {
-    session.abortTransaction()
-    session.endSession()
     return res.status(400).json({
       error: 'Error to create a user'
     })

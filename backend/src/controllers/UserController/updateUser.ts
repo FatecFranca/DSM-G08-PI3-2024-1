@@ -63,6 +63,7 @@ export const updateUser = async (req: Request, res: Response) => {
     address: address?._id || savedUser.address
   })
   const updatedUser = await userModel.findById(id)
+    .populate('address')
 
   return res.status(200).json(updatedUser)
 }
