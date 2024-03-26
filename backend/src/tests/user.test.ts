@@ -1,3 +1,4 @@
+import mongoose from 'mongoose'
 import supertest from 'supertest'
 import server from '../configs/server'
 import { addressModel } from '../models/AddressModel'
@@ -124,6 +125,40 @@ describe('User endpoint tests suite', () => {
           email: 'invalid_email'
         })
         .expect(400)
+    })
+  })
+
+  describe('PUT /users/:id', () => {
+    let id: string
+    beforeEach(async () => {
+      const { body } = await supertest(server)
+        .post('/users')
+        .send(user)
+      id = body._id
+      return
+    })
+
+    it('should return 200 and updated user', async () => {
+      const updatedUser = {
+        ...user,
+        name: 'new_name',
+        email: undefined,
+        password: undefined,
+        address: {
+          ...user.address,
+          street: 'new_street'
+        }
+      }
+      const { body } = await supertest(server)
+        .put(`/users/${id}`)
+        .send(updatedUser)
+        .expect(200)
+      const savedUser = await userModel.findById(id)
+      const savedAddress = await addressModel.findById(savedUser?.address)
+      expect(body.name).toBe(updatedUser.name)
+      expect(savedUser?.name).toBe(updatedUser.name)
+      expect(body.address).toBe(savedAddress?._id.toString())
+      expect(savedAddress?.street).toBe(updatedUser.address.street)
     })
   })
 })
