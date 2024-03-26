@@ -175,6 +175,9 @@ describe('User endpoint tests suite', () => {
       const savedUser = await userModel.findById(id)
         .populate('address')
 
+      expect(savedUser).toBeTruthy()
+      expect(savedUser?.name).toBe(newName)
+      expect((savedUser?.address as unknown as any).street).toBe(newAddressName)
       expect(body).toEqual({
         ...expectedUser,
         name: newName,
