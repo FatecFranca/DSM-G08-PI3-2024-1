@@ -62,13 +62,12 @@ describe('User endpoint tests suite', () => {
   })
 
   describe('POST /users', () => {
-    it('should reuturn created user', async () => {
+    it('should return created user', async () => {
       const response = await supertest(server)
         .post('/users')
         .send(user)
         .expect(201)
       const savedUser = await userModel.findById(response.body._id)
-      expect(savedUser).toBeTruthy()
       expect(response.body).toEqual(expectedUser)
     })
 

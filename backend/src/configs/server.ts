@@ -14,7 +14,6 @@ server.use((error: any, req: Request, res: Response, next: NextFunction) => {
   if (error instanceof ZodError) {
     return res.status(400).json({ error: error.errors })
   }
-  console.log(error)
   return res.status(500).json({ error: error.message })
 })
 

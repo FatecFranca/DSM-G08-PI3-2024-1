@@ -19,6 +19,7 @@ export const envSchema = z.object({
   PORT: z.string().default('8080'),
   DATABASE_URL: z.string(),
   ENV: ENVZodType,
+  JWT_SECRET: z.string(),
 })
 
 export const env = envSchema.parse(process.env)

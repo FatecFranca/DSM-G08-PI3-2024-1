@@ -7,7 +7,6 @@ import { userModel, zodUserSchema } from '../../models/UserMode'
 
 export const createUser = async (req: Request, res: Response) => {
   const userData = zodUserSchema.parse(req.body)
-
   const existUserWithEmail = await userModel.findOne({
     email: userData.email
   })
@@ -52,6 +51,7 @@ export const createUser = async (req: Request, res: Response) => {
 
     return res.status(201).json(createdUser)
   } catch (error) {
+    console.error(error)
     return res.status(400).json({
       error: 'Error to create a user'
     })
