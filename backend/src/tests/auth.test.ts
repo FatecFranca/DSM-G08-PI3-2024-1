@@ -1,8 +1,8 @@
+import { Types } from 'mongoose'
 import supertest from 'supertest'
-import { User, userModel } from '../models/UserMode'
 import server from '../configs/server'
-import mongoose, { Types } from 'mongoose'
 import { addressModel } from '../models/AddressModel'
+import { User, userModel } from '../models/UserMode'
 
 describe('Auth endpoints tests suite', () => {
   let id: Types.ObjectId
@@ -65,17 +65,77 @@ describe('Auth endpoints tests suite', () => {
     await addressModel.deleteMany({})
   })
 
-  it('should return 200 and a token when user pass correct credentials', async () => {
-    const { body } = await supertest(server)
-      .post('/auth/login')
-      .send({
-        email: user.email,
-        password: user.password
+  describe('POST /auth/login', () => {
+    it('should return 200 and a token when user pass correct credentials', async () => {
+      const { body } = await supertest(server)
+        .post('/auth/login')
+        .send({
+          email: user.email,
+          password: user.password
+        })
+        .expect(200)
+      
+      expect(body).toEqual({
+        token: expect.any(String)
       })
-      .expect(200)
-    
-    expect(body).toEqual({
-      token: expect.any(String)
+    })
+  
+    it.skip('should return 401 when user pass incorrect credentials', async () => {
+  
+    })
+  })
+
+  describe('GET /auth/verify-token', () => {
+    let token: string
+    beforeEach(async () => {
+      const { body } = await supertest(server)
+        .post('/auth/login')
+        .send({
+          email: user.email,
+          password: user.password
+        })
+      token = body.token
+    })
+
+    it('should return 200 and a message when token is valid', async () => {
+      await supertest(server)
+        .get('/auth/verify-token')
+        .set('Authorization', `Bearer ${token}`)
+        .expect(200)
+    })
+
+    it('should return 401 when token is not provided', async () => {
+      await supertest(server)
+        .get('/auth/verify-token')
+        .expect(401)
+    })
+
+    it('should return 401 when token is invalid', async () => {
+      await supertest(server)
+        .get('/auth/verify-token')
+        .set('Authorization', 'Bearer invalid_token')
+        .expect(401)
+    })
+
+    it('should return 401 when token is empty', async () => {
+      await supertest(server)
+        .get('/auth/verify-token')
+        .set('Authorization', 'Bearer ')
+        .expect(401)
+    })
+
+    it('should return 401 when token is null', async () => {
+      await supertest(server)
+        .get('/auth/verify-token')
+        .set('Authorization', 'Bearer')
+        .expect(401)
+    })
+
+    it('should return 401 when token is not a Bearer token', async () => {
+      await supertest(server)
+        .get('/auth/verify-token')
+        .set('Authorization', token)
+        .expect(401)
     })
   })
 })
