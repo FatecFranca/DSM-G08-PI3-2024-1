@@ -146,12 +146,25 @@ describe('User endpoint tests suite', () => {
 
   describe('PUT /users/:id', () => {
     let id: string
+    let token: string
+
     beforeEach(async () => {
       const { body } = await supertest(server)
         .post('/users')
         .send(user)
       id = body._id
+      const { body: loginBodyResponse } = await supertest(server)
+        .post('/auth/login')
+        .send({ email: user.email, password: user.password })
+      token = loginBodyResponse.token
       return
+    })
+
+    it('should return 401 if user is not authenticated', async () => {
+      await supertest(server)
+        .put(`/users/${id}`)
+        .send(user)
+        .expect(401)
     })
 
     it('should return 200 and updated user', async () => {
@@ -169,6 +182,7 @@ describe('User endpoint tests suite', () => {
       }
       const { body } = await supertest(server)
         .put(`/users/${id}`)
+        .set('Authorization', `Bearer ${token}`)
         .send(updatedUser)
         .expect(200)
       const savedUser = await userModel.findById(id)
@@ -191,17 +205,24 @@ describe('User endpoint tests suite', () => {
 
   describe('GET /users/:id', () => {
     let id: string
+    let token: string
     beforeEach(async () => {
       const { body } = await supertest(server)
         .post('/users')
+
         .send(user)
       id = body._id
+      const { body: loginBodyResponse } = await supertest(server)
+        .post('/auth/login')
+        .send({ email: user.email, password: user.password })
+      token = loginBodyResponse.token
       return
     })
 
     it('should return 200 and user with address', async () => {
       const { body } = await supertest(server)
         .get(`/users/${id}`)
+        .set('Authorization', `Bearer ${token}`)
         .expect(200)
       
       expect(body).toEqual(expectedUser)
@@ -210,17 +231,23 @@ describe('User endpoint tests suite', () => {
 
   describe('DELETE /users/:id', () => {
     let id: string
+    let token: string
     beforeEach(async () => {
       const { body } = await supertest(server)
         .post('/users')
         .send(user)
       id = body._id
+      const { body: loginBodyResponse } = await supertest(server)
+        .post('/auth/login')
+        .send({ email: user.email, password: user.password })
+      token = loginBodyResponse.token
       return
     })
 
     it('should return 200 and delete user', async () => {
       await supertest(server)
         .delete(`/users/${id}`)
+        .set('Authorization', `Bearer ${token}`)
         .expect(200)
       
       const savedUser = await userModel.findById(id)
