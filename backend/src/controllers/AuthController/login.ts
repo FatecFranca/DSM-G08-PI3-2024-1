@@ -3,7 +3,7 @@ import { Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 import { z } from 'zod'
 import { env } from '../../configs/env'
-import { userModel } from '../../models/UserMode'
+import { userModel } from '../../models/UserModel'
 
 const loginBodySchema = z.object({
   email: z.string().email(),

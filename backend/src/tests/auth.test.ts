@@ -2,7 +2,7 @@ import { Types } from 'mongoose'
 import supertest from 'supertest'
 import server from '../configs/server'
 import { addressModel } from '../models/AddressModel'
-import { User, userModel } from '../models/UserMode'
+import { User, userModel } from '../models/UserModel'
 
 describe('Auth endpoints tests suite', () => {
   let id: Types.ObjectId

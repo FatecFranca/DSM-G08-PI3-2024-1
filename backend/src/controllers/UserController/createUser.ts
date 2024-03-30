@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt'
 import { Request, Response } from 'express'
-import mongoose, { HydratedDocument } from 'mongoose'
+import { HydratedDocument } from 'mongoose'
 import { Address, addressModel } from '../../models/AddressModel'
-import { userModel, zodUserSchema } from '../../models/UserMode'
+import { userModel, zodUserSchema } from '../../models/UserModel'
 
 
 export const createUser = async (req: Request, res: Response) => {
