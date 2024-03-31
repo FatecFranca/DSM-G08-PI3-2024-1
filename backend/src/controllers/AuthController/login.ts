@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken'
 import { z } from 'zod'
 import { env } from '../../configs/env'
 import { userModel } from '../../models/UserModel'
+import { RoleEnum } from '../../types/RoleEnum'
 
 const loginBodySchema = z.object({
   email: z.string().email(),
@@ -30,7 +31,7 @@ export const login = async (req: Request, res: Response) => {
     })
   }
   
-  const token = await jwt.sign({ id: user._id }, env.JWT_SECRET, { expiresIn: '1d' })
+  const token = await jwt.sign({ id: user._id, role: RoleEnum.USER }, env.JWT_SECRET, { expiresIn: '1d' })
 
   return res.status(200).json({
     token

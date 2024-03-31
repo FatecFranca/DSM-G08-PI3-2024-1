@@ -1,8 +1,8 @@
-import { Faker, pt_BR } from '@faker-js/faker'
-import cpfUtils from '@fnando/cpf'
+import { Faker, pt_BR, fakerEN_US } from '@faker-js/faker'
+import { generate } from '@fnando/cpf'
 import { User } from '../../models/UserModel'
 
-const fake = new Faker({
+const fakerBR = new Faker({
   locale: [pt_BR]
 })
 
@@ -10,7 +10,7 @@ const defaultUserProps: User = {
   name: 'any_name',
   lastName: 'any_last_name',
   email: 'any@email.com',
-  cpf: cpfUtils.generate(true),
+  cpf: generate(true),
   gender: 'M',
   data_nascimento: new Date('1998-10-10'),
   password: 'any_password',
@@ -58,15 +58,15 @@ export class UserFactory {
   }
 
   randomize() {
-    const fakePerson = fake.person
+    const fakePerson = fakerBR.person
     return this.with({
       name: fakePerson.firstName(),
       lastName: fakePerson.lastName(),
-      cpf: cpfUtils.generate(true),
-      data_nascimento: fake.date.birthdate(),
-      email: fake.internet.email(),
-      gender: fakePerson.gender() === 'female'? 'F' : 'M',
-      password: fake.internet.password(),
+      cpf: generate(true),
+      data_nascimento: fakerBR.date.birthdate(),
+      email: fakerBR.internet.email(),
+      gender: fakerEN_US.person.gender() === 'female'? 'F' : 'M',
+      password: fakerBR.internet.password(),
     })
   }
   
