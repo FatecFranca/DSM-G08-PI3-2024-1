@@ -1,7 +1,7 @@
-import { env } from '../configs/env'
 import mongoose from 'mongoose'
+import { env } from '../configs/env'
 import { addressModel } from '../models/AddressModel'
-import { userModel } from '../models/UserMode'
+import { userModel } from '../models/UserModel'
 
 beforeAll(async () => {
   await mongoose.connect(env.DATABASE_URL)

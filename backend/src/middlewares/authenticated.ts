@@ -1,6 +1,19 @@
 import { NextFunction, Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 import { env } from '../configs/env'
+import { RoleEnum } from '../types/RoleEnum'
+
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace Express {
+    interface Request {
+      payload?: {
+        id: string;
+        role: RoleEnum;
+      };
+    }
+  }
+}
 
 export const authenticated = async (req: Request, res: Response, next: NextFunction) => {
   const token = req.headers.authorization
@@ -24,7 +37,8 @@ export const authenticated = async (req: Request, res: Response, next: NextFunct
   
   try {
     const payload = jwt.verify(tokenValue, env.JWT_SECRET) as {
-      id: string
+      id: string,
+      role: RoleEnum
     }
     
     req.payload = payload

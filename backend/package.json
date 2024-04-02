@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
     "@types/dotenv": "^8.2.0",
@@ -28,6 +29,7 @@
     "typescript": "^5.4.3"
   },
   "dependencies": {
+    "@fnando/cpf": "^1.0.2",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
@@ -35,6 +37,7 @@
     "express-async-errors": "^3.1.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.2.3",
+    "socket.io": "^4.7.5",
     "supertest": "^6.3.4",
     "zod": "^3.22.4"
   }

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import mongoose, { HydratedDocument } from 'mongoose'
 import { Address, addressModel } from '../../models/AddressModel'
-import { userModel, zodUserSchema } from '../../models/UserMode'
+import { userModel, zodUserSchema } from '../../models/UserModel'
 
 export const updateUser = async (req: Request, res: Response) => {
   const { id } = req.params
