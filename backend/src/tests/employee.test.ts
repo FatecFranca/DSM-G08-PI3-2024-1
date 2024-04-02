@@ -1,6 +1,6 @@
 import { Types } from 'mongoose'
 import supertest from 'supertest'
-import server from '../configs/server'
+import app from '../configs/server'
 import { employeeModel } from '../models/EmployeeModel'
 import { RoleEnum } from '../types/RoleEnum'
 import { UserFactory } from './utils/user-factory'
@@ -14,14 +14,14 @@ describe('Employees endpoint tests suite', () => {
   const user = UserFactory.random()
 
   beforeAll(async () => {
-    const { body: adminBody } = await supertest(server)
+    const { body: adminBody } = await supertest(app)
       .post('/users')
       .send(admin)
-    const { body: userBody } = await supertest(server)
+    const { body: userBody } = await supertest(app)
       .post('/users')
       .send(user)
   
-    const { body: token } = await supertest(server)
+    const { body: token } = await supertest(app)
       .post('/auth/login')
       .send({
         email: user.email,
@@ -45,7 +45,7 @@ describe('Employees endpoint tests suite', () => {
   describe('POST /employees', () => {
     
     it('should create a new admin if not admin employee registered', async () => {
-      const { body } = await supertest(server)
+      const { body } = await supertest(app)
         .post('/employees')
         .set('Authorization', userBearerToken)
         .send({
@@ -67,7 +67,7 @@ describe('Employees endpoint tests suite', () => {
       let adminBearerToken: string
       
       beforeEach(async () => {
-        await supertest(server)
+        await supertest(app)
           .post('/employees')
           .set('Authorization', userBearerToken)
           .send({
@@ -75,7 +75,7 @@ describe('Employees endpoint tests suite', () => {
             role: RoleEnum.ADMIN
           }).expect(201)
         
-        const { body } = await supertest(server)
+        const { body } = await supertest(app)
           .post('/auth/login-employee')
           .send({
             email: admin.email,
@@ -90,7 +90,7 @@ describe('Employees endpoint tests suite', () => {
       })
 
       it('should return 403 if trying to create a new admin when already exists one', async () => {
-        await supertest(server)
+        await supertest(app)
           .post('/employees')
           .set('Authorization', adminBearerToken)
           .send({
@@ -100,7 +100,7 @@ describe('Employees endpoint tests suite', () => {
       })
 
       it('should return 201 if pass a valid employee', async () => {
-        const { body } = await supertest(server)
+        const { body } = await supertest(app)
           .post('/employees')
           .set('Authorization', adminBearerToken)
           .send({
@@ -117,7 +117,7 @@ describe('Employees endpoint tests suite', () => {
       })
 
       it('should return 400 if pass a invalid types.ObjectId', async () => {
-        await supertest(server)
+        await supertest(app)
           .post('/employees')
           .set('Authorization', adminBearerToken)
           .send({
@@ -127,7 +127,7 @@ describe('Employees endpoint tests suite', () => {
       })
 
       it('should return 400 if pass a inexistent user', async () => {
-        await supertest(server)
+        await supertest(app)
           .post('/employees')
           .set('Authorization', adminBearerToken)
           .send({
@@ -137,7 +137,7 @@ describe('Employees endpoint tests suite', () => {
       })
 
       it('should return 400 if pass a invalid role', async () => {
-        await supertest(server)
+        await supertest(app)
           .post('/employees')
           .set('Authorization', adminBearerToken)
           .send({

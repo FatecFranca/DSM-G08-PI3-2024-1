@@ -1,5 +1,5 @@
 import supertest from 'supertest'
-import server from '../configs/server'
+import app from '../configs/server'
 import { addressModel } from '../models/AddressModel'
 import { User, userModel } from '../models/UserModel'
 
@@ -63,7 +63,7 @@ describe('User endpoint tests suite', () => {
 
   describe('POST /users', () => {
     it('should return created user', async () => {
-      const response = await supertest(server)
+      const response = await supertest(app)
         .post('/users')
         .send(user)
         .expect(201)
@@ -73,7 +73,7 @@ describe('User endpoint tests suite', () => {
 
     it('should create user even if healthInfo is not provided', async () => {
       delete user.healthInfo
-      const { body } = await supertest(server)
+      const { body } = await supertest(app)
         .post('/users')
         .send(user)
         .expect(201)
@@ -82,7 +82,7 @@ describe('User endpoint tests suite', () => {
     })
 
     it('should not save user password as plain text', async () => {
-      const { body } = await supertest(server)
+      const { body } = await supertest(app)
         .post('/users')
         .send(user)
         .expect(201)
@@ -99,7 +99,7 @@ describe('User endpoint tests suite', () => {
 
       await existentUser.save()
       
-      await supertest(server)
+      await supertest(app)
         .post('/users')
         .send(user)
         .expect(400)
@@ -114,7 +114,7 @@ describe('User endpoint tests suite', () => {
 
       await existentUser.save()
       
-      await supertest(server)
+      await supertest(app)
         .post('/users')
         .send({
           ...user,
@@ -124,7 +124,7 @@ describe('User endpoint tests suite', () => {
     })
 
     it.skip('should return 400 if pass invalid cpf', async () => {
-      await supertest(server)
+      await supertest(app)
         .post('/users')
         .send({
           ...user,
@@ -134,7 +134,7 @@ describe('User endpoint tests suite', () => {
     })
 
     it('should return 400 if pass invalid email', async () => {
-      return supertest(server)
+      return supertest(app)
         .post('/users')
         .send({
           ...user,
@@ -149,11 +149,11 @@ describe('User endpoint tests suite', () => {
     let token: string
 
     beforeEach(async () => {
-      const { body } = await supertest(server)
+      const { body } = await supertest(app)
         .post('/users')
         .send(user)
       id = body._id
-      const { body: loginBodyResponse } = await supertest(server)
+      const { body: loginBodyResponse } = await supertest(app)
         .post('/auth/login')
         .send({ email: user.email, password: user.password })
       token = loginBodyResponse.token
@@ -161,7 +161,7 @@ describe('User endpoint tests suite', () => {
     })
 
     it('should return 401 if user is not authenticated', async () => {
-      await supertest(server)
+      await supertest(app)
         .put(`/users/${id}`)
         .send(user)
         .expect(401)
@@ -180,7 +180,7 @@ describe('User endpoint tests suite', () => {
           street: newAddressName
         }
       }
-      const { body } = await supertest(server)
+      const { body } = await supertest(app)
         .put(`/users/${id}`)
         .set('Authorization', `Bearer ${token}`)
         .send(updatedUser)
@@ -207,12 +207,12 @@ describe('User endpoint tests suite', () => {
     let id: string
     let token: string
     beforeEach(async () => {
-      const { body } = await supertest(server)
+      const { body } = await supertest(app)
         .post('/users')
 
         .send(user)
       id = body._id
-      const { body: loginBodyResponse } = await supertest(server)
+      const { body: loginBodyResponse } = await supertest(app)
         .post('/auth/login')
         .send({ email: user.email, password: user.password })
       token = loginBodyResponse.token
@@ -220,7 +220,7 @@ describe('User endpoint tests suite', () => {
     })
 
     it('should return 200 and user with address', async () => {
-      const { body } = await supertest(server)
+      const { body } = await supertest(app)
         .get(`/users/${id}`)
         .set('Authorization', `Bearer ${token}`)
         .expect(200)
@@ -233,11 +233,11 @@ describe('User endpoint tests suite', () => {
     let id: string
     let token: string
     beforeEach(async () => {
-      const { body } = await supertest(server)
+      const { body } = await supertest(app)
         .post('/users')
         .send(user)
       id = body._id
-      const { body: loginBodyResponse } = await supertest(server)
+      const { body: loginBodyResponse } = await supertest(app)
         .post('/auth/login')
         .send({ email: user.email, password: user.password })
       token = loginBodyResponse.token
@@ -245,7 +245,7 @@ describe('User endpoint tests suite', () => {
     })
 
     it('should return 200 and delete user', async () => {
-      await supertest(server)
+      await supertest(app)
         .delete(`/users/${id}`)
         .set('Authorization', `Bearer ${token}`)
         .expect(200)
