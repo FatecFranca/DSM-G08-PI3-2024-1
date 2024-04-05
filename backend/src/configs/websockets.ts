@@ -12,7 +12,8 @@ const validToken = (token: string): Required<Request>['payload'] => {
 
   return payload
 }
-
+//TODO: Intead of save only the rooms. Save sockets infos like userId and role.
+//TODO: Works more like saga. Where chat has a saga like created, sent, error, received
 const socketRooms: Record<string, string[]> = {}
 io.on('connection', (socket) => {
   socket.on('chat.enter', async ({token, chatId}) => {
