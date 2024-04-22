@@ -2,12 +2,16 @@ import { Request, Response } from 'express'
 import mongoose from 'mongoose'
 import { z } from 'zod'
 import { chatModel } from '../../models/ChatModel'
+import { RoleEnum } from '../../types/RoleEnum'
 
-const zodCreateChatSchema = z.object({
-  patient: z.instanceof(mongoose.Types.ObjectId),
-})
+
 export const createChat = async (req: Request, res: Response) => {
-  const { patient } = zodCreateChatSchema.parse(req.body)
+  const payload = req.payload
+  if (!payload || payload.role !== RoleEnum.USER) {
+    return res.status(401).json({ message: 'Unauthorized' })
+  }
+
+  const patient = payload.id as any
 
   const newChat = await chatModel.create({
     patient,

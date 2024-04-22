@@ -304,14 +304,6 @@
           }
         }
       },
-      "CreateChatBody": {
-        "type": "object",
-        "properties": {
-          "patient": {
-            "type": "string"
-          }
-        }
-      },
       "DefaultChatResponse": {
         "type": "object",
         "properties": {
@@ -683,15 +675,6 @@
             "bearerAuth": []
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateChatBody"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "OK",

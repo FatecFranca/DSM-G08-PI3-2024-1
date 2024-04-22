@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node-dev src/index.ts",
+    "start": "ts-node-dev src/index.ts --transpile-only",
     "test": "jest --runInBand",
     "test:watch": "jest --runInBand --watchAll"
   },

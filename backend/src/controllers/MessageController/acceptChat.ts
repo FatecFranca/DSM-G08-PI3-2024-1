@@ -2,13 +2,15 @@ import { Request, Response } from 'express'
 import { Types } from 'mongoose'
 import { z } from 'zod'
 import { chatModel } from '../../models/ChatModel'
+import { RoleEnum } from '../../types/RoleEnum'
 
-const zodAcceptChatSchema = z.object({
-  attendant: z.instanceof(Types.ObjectId),
-})
-//TODO: get attendant from token
 export const acceptChat = async (req: Request, res: Response) => {
-  const { attendant } = zodAcceptChatSchema.parse(req.body)
+  const payload = req.payload
+  if (!payload || ![RoleEnum.ADMIN, RoleEnum.EMPLOYEE].includes(payload.role)) {
+    return res.status(401).json({ message: 'Unauthorized' })
+  }
+  const attendant = payload.id as any
+
   const chatId = req.params.chatId
 
   const chat = await chatModel.findById(chatId)
