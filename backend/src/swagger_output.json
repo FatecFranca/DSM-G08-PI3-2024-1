@@ -25,6 +25,33 @@
     }
   ],
   "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "responses": {
+      "UnauthorizedError": {
+        "description": "Access token is missing or invalid",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "security": {
+      "bearerAuth": []
+    },
     "schemas": {
       "User": {
         "type": "object",
@@ -335,6 +362,11 @@
         "tags": ["users"],
         "summary": "Get user by id",
         "operationId": "getUserById",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
@@ -362,6 +394,11 @@
         "tags": ["users"],
         "summary": "Update user",
         "operationId": "updateUser",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
@@ -391,6 +428,11 @@
         "tags": ["users"],
         "summary": "Delete user",
         "operationId": "deleteUser",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
@@ -502,6 +544,11 @@
         "tags": ["auth"],
         "summary": "Verify token",
         "operationId": "verifyToken",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -514,6 +561,11 @@
         "tags": ["employees"],
         "summary": "Create employee",
         "operationId": "createEmployee",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -540,6 +592,11 @@
         "tags": ["employees"],
         "summary": "Get all employees",
         "operationId": "getAllEmployees",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -562,6 +619,11 @@
         "tags": ["employees"],
         "summary": "Get employee by id",
         "operationId": "getEmployeeById",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
@@ -589,6 +651,11 @@
         "tags": ["employees"],
         "summary": "Delete employee",
         "operationId": "deleteEmployee",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
@@ -611,6 +678,11 @@
         "tags": ["chats"],
         "summary": "Create chat",
         "operationId": "createChat",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -639,6 +711,11 @@
         "tags": ["chats"],
         "summary": "Get chat by id",
         "operationId": "getChatById",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
@@ -668,6 +745,11 @@
         "tags": ["chats"],
         "summary": "Send message",
         "operationId": "sendMessage",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
@@ -704,6 +786,11 @@
         "tags": ["chats"],
         "summary": "Accept chat",
         "operationId": "acceptChat",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
@@ -726,6 +813,11 @@
         "tags": ["chats"],
         "summary": "Get chat by attendant id",
         "operationId": "getChatByAttendantId",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "attedantId",
@@ -758,6 +850,11 @@
         "tags": ["chats"],
         "summary": "Get chat by patient id",
         "operationId": "getChatByPatientId",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "patientId",
