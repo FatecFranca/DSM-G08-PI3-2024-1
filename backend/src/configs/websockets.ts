@@ -42,21 +42,6 @@ io.on('connection', (socket) => {
     socket.join(`chat:${chatId}`)
   })
 
-  socket.on('chat.message.add', ({token, chatId, message}) => {
-    let payload: Required<Request>['payload']
-    try {
-      payload = validToken(token)
-    } catch (error) {
-      return socket.emit('chat.message.add:error', {message: 'Invalid token', status: 401})
-    }
-    const chat = chatModel.findById(chatId)
-    if (!chat) {
-      return socket.emit('chat.message.add:error', {message: 'Chat not found', status: 404})
-    }
-
-    io.to(`chat:${chatId}`).emit('chat.message.add:sucess', {message})
-  })
-
   socket.on('disconnect', () => {
     console.log('disconnect', socket.id)
     const rooms = socketRooms[socket.id]

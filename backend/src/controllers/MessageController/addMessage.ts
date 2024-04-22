@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { z } from 'zod'
 import { chatModel } from '../../models/ChatModel'
+import { io } from '../../configs/server'
 
 const zodBodySchema = z.object({
   message: z.string().trim().min(1).max(1000),
@@ -26,5 +27,6 @@ export const addMessage = async (req: Request, res: Response) => {
 
   chat.messages.push({message, sender: payload.id})
 
+  io.to(`chat:${chatId}`).emit('chat.message.created', {message})
   return res.status(201).json({message: 'Message added'})
 }
