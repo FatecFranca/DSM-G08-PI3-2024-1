@@ -14,7 +14,11 @@ app.use(express.json())
 app.use(cors())
 app.use(routes)
 app.use('/api-docs', swaggerUi.serve)
-app.get('/api-docs', swaggerUi.setup(swaggerFile))
+app.get('/api-docs', swaggerUi.setup(swaggerFile, {
+  swaggerOptions: {
+    supportedSubmitMethods: []
+  }
+}))
 
 app.use((error: any, req: Request, res: Response, next: NextFunction) => {
   if (error instanceof ZodError) {
