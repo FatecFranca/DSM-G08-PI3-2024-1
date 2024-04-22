@@ -6,8 +6,8 @@ const chatRoutes = Router()
 chatRoutes.put('/:chatId/accept', acceptChat)
 chatRoutes.post('/', createChat)
 chatRoutes.get('/:chatId', getChatById)
-chatRoutes.get('/:attendantId', getChatsByAttendant)
-chatRoutes.get('/:userId', getChatsByUser)
-chatRoutes.post('/:chatId/message', addMessage)
+chatRoutes.get('/attendant/:attendantId', getChatsByAttendant)
+chatRoutes.get('/patient/:userId', getChatsByUser)
+chatRoutes.post('/:chatId/messages', addMessage)
 
 export default chatRoutes
