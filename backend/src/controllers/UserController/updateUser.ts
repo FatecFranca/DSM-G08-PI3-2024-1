@@ -2,15 +2,16 @@ import { Request, Response } from 'express'
 import { DuplicatedIndexError } from '../../errors/DuplicatedIndexError'
 import { NotFoundError } from '../../errors/NotFoundError'
 import { userModel, zodUserSchema } from '../../models/UserModel'
+import { z } from 'zod'
 
 export const updateUser = async (req: Request, res: Response) => {
   const { id } = req.params
-  const userData = zodUserSchema.omit({
-    _id: true,
-    password: true,
-    email: true,
-  }).partial().parse(req.body)
-
+  const userData = zodUserSchema.partial().extend({
+    _id: z.undefined(),
+    password: z.undefined(),
+    email: z.undefined(),
+  }).parse(req.body)
+  
   const savedUser = await userModel.findById(id)
   if (!savedUser) {
     throw new NotFoundError('User not found', { id })

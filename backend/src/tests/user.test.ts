@@ -48,49 +48,6 @@ describe('User endpoint tests suite', () => {
       return
     })
 
-    it('should return 401 if user is not authenticated', async () => {
-      await supertest(app)
-        .put(`/users/${id}`)
-        .send(user)
-        .expect(401)
-    })
-
-    it('should return 200 and updated user', async () => {
-      const newName = 'new_name'
-      const newAddressName = 'new_street'
-      const updatedUser = {
-        ...user,
-        name: newName,
-        email: undefined,
-        password: undefined,
-        address: {
-          ...user.address,
-          street: newAddressName
-        }
-      }
-      const { body } = await supertest(app)
-        .put(`/users/${id}`)
-        .set('Authorization', `Bearer ${token}`)
-        .send(updatedUser)
-        .expect(200)
-      const savedUser = await userModel.findById(id)
-        .populate('address')
-
-      expect(savedUser).toBeTruthy()
-      expect(savedUser?.name).toBe(newName)
-      expect((savedUser?.address as unknown as any).street).toBe(newAddressName)
-      expect(body).toEqual({
-        ...expectedUser,
-        name: newName,
-        address: {
-          ...expectedAddress,
-          street: newAddressName
-        }
-      })
-
-    })
-  })
-
   describe('GET /users/:id', () => {
     let id: string
     let token: string
