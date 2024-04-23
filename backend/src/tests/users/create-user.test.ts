@@ -106,4 +106,19 @@ describe('POST /users', () => {
     expect(body.duplicatedIndexes).toEqual({ cpf: user.cpf })
     expect(body.message.toLocaleLowerCase()).toContain('cpf')
   })
+
+  it('should return 400 if alread exists a user with this email and cpf', async () => {
+    const anotherUser = UserFactory.random()
+    const existentUser = new userModel({...anotherUser, email: user.email, cpf: user.cpf})
+    await existentUser.save()
+
+    const { body } = await supertest(server)
+      .post('/users')
+      .send(user)
+      .expect(400)
+
+    expect(body.duplicatedIndexes).toEqual({ email: user.email, cpf: user.cpf })
+    expect(body.message.toLocaleLowerCase()).toContain('email')
+    expect(body.message.toLocaleLowerCase()).toContain('cpf')
+  })
 })  
