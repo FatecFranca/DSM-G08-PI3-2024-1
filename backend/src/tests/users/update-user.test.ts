@@ -155,4 +155,16 @@ describe('PUT /users/:id', () => {
       .send({ name: 'new_name' })
       .expect(404)
   })
+
+  it('should return 403 if a user try to update another user', async () => {
+    const anotherUser = UserFactory.random()
+    const anotherCreatedUser = await userModel.create(anotherUser)
+    createdUsersIds.push(anotherCreatedUser._id)
+
+    await supertest(server)
+      .put(`/users/${anotherCreatedUser._id}`)
+      .set('Authorization', bearerToken)
+      .send({ name: 'new_name' })
+      .expect(403)
+  })
 })
