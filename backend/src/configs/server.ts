@@ -5,6 +5,8 @@ import http from 'http'
 import { Server } from 'socket.io'
 import swaggerUi from 'swagger-ui-express'
 import { ZodError } from 'zod'
+import { AppError } from '../errors/AppError'
+import { BodyValidationError } from '../errors/BodyValidationError'
 import swaggerFile from '../swagger_output.json'
 import routes from './routes'
 
@@ -21,11 +23,21 @@ app.get('/api-docs', swaggerUi.setup(swaggerFile, {
 }))
 
 app.use((error: any, req: Request, res: Response, next: NextFunction) => {
-  if (error instanceof ZodError) {
-    return res.status(400).json({ error: error.errors })
+  let resultError: AppError
+  switch (error.constructor) {
+  case AppError:
+    resultError = error
+    break
+  case ZodError:
+    resultError = BodyValidationError.fromZodError(error)
+    break
+  default:
+    console.log(error)
+    resultError = AppError.InternalServerError('Internal server error')
+    break
   }
-  console.log(error)
-  return res.status(500).json({ error: error.message })
+
+  return res.status(resultError.statusCode).json(resultError)
 })
 
 const server = http.createServer(app)
