@@ -3,6 +3,7 @@ import supertest from 'supertest'
 import app from '../configs/server'
 import { addressModel } from '../models/AddressModel'
 import { User, userModel } from '../models/UserModel'
+import { UserFactory } from './utils/user-factory'
 
 describe('Auth endpoints tests suite', () => {
   let id: Types.ObjectId
@@ -11,29 +12,7 @@ describe('Auth endpoints tests suite', () => {
   let expectedUser: any
 
   beforeEach(async () => {
-    user = {
-      name: 'any_name',
-      lastName: 'any_last_name',
-      email: 'any@email.com',
-      cpf: '132.456.789-09',
-      gender: 'M',
-      data_nascimento: new Date('1998-10-10'),
-      password: 'any_password',
-      address: {
-        cep: 'any_cep',
-        street: 'any_street',
-        num: '123',
-        city: 'any_city',
-        uf: 'SP'
-      },
-      healthInfo: {
-        allergy: 'any_allergy',
-        cardiorespiratoryDisease: 'any_cardiorespiratoryDisease',
-        medicineInUse: 'any_medicineInUse',
-        preExistingCondition: 'any_preExistingCondition',
-        surgery: 'any_surgery',
-      }
-    }
+    user = UserFactory.random()
 
     expectedAddress = {
       ...user.address,
@@ -44,10 +23,7 @@ describe('Auth endpoints tests suite', () => {
     expectedUser = {
       ...user,
       _id: expect.any(String),
-      address: expect.objectContaining({
-        ...user.address,
-        _id: expect.any(String)
-      }),
+      address: expectedAddress,
       data_nascimento: user.data_nascimento.toISOString(),
       healthInfo: expect.objectContaining(user.healthInfo),
       password: expect.any(String),
