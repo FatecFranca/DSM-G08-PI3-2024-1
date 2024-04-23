@@ -1,6 +1,5 @@
 import supertest from 'supertest'
 import app from '../configs/server'
-import { addressModel } from '../models/AddressModel'
 import { User, userModel } from '../models/UserModel'
 import { UserFactory } from './utils/user-factory'
 
@@ -15,8 +14,7 @@ describe('User endpoint tests suite', () => {
 
     expectedAddress = {
       ...user.address,
-      _id: expect.any(String),
-      __v: expect.any(Number)
+      _id: expect.any(String)
     }
 
     expectedUser = {
@@ -31,7 +29,6 @@ describe('User endpoint tests suite', () => {
   })
 
   afterEach(async () => {
-    await addressModel.deleteMany({})
     await userModel.deleteMany({})
   })
 
@@ -65,11 +62,7 @@ describe('User endpoint tests suite', () => {
     })
 
     it('should return 400 if already exists a user with this email', async () => {
-      const address = await addressModel.create(user.address)
-      const existentUser = new userModel({
-        ...user,
-        address: address._id
-      })
+      const existentUser = new userModel(user)
 
       await existentUser.save()
       
@@ -80,11 +73,7 @@ describe('User endpoint tests suite', () => {
     })
 
     it('should return 400 if already exists a user with this cpf', async () => {
-      const address = await addressModel.create(user.address)
-      const existentUser = new userModel({
-        ...user,
-        address: address._id
-      })
+      const existentUser = new userModel(user)
 
       await existentUser.save()
       

@@ -1,7 +1,6 @@
 import { Types } from 'mongoose'
 import supertest from 'supertest'
 import app from '../configs/server'
-import { addressModel } from '../models/AddressModel'
 import { User, userModel } from '../models/UserModel'
 import { UserFactory } from './utils/user-factory'
 
@@ -16,8 +15,7 @@ describe('Auth endpoints tests suite', () => {
 
     expectedAddress = {
       ...user.address,
-      _id: expect.any(String),
-      __v: expect.any(Number)
+      _id: expect.any(String)
     }
 
     expectedUser = {
@@ -38,7 +36,6 @@ describe('Auth endpoints tests suite', () => {
 
   afterEach(async () => {
     await userModel.deleteMany({})
-    await addressModel.deleteMany({})
   })
 
   describe('POST /auth/login', () => {
