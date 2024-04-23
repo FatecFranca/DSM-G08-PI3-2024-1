@@ -3,13 +3,13 @@ import { WebStatusCodeEnum } from './WebStatusCodeEnum'
 
 export class NotFoundError extends AppError {
   _name = 'NotFoundError'
-  queryParams: string[] = []
+  queryParams: Record<string, string|number> = {}
 
-  constructor(message: string, queryParams: string[] = []) {
+  constructor(message: string, queryParams: Record<string, string|number>) {
     super(message, WebStatusCodeEnum.NotFound)
     this.queryParams = queryParams
   }
-  
+
   toJSON() {
     return {
       ...super.toJSON(),

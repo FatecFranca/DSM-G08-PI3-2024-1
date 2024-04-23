@@ -1,4 +1,6 @@
 import { Request, Response } from 'express'
+import { DuplicatedIndexError } from '../../errors/DuplicatedIndexError'
+import { NotFoundError } from '../../errors/NotFoundError'
 import { userModel, zodUserSchema } from '../../models/UserModel'
 
 export const updateUser = async (req: Request, res: Response) => {
@@ -11,9 +13,7 @@ export const updateUser = async (req: Request, res: Response) => {
 
   const savedUser = await userModel.findById(id)
   if (!savedUser) {
-    return res.status(404).json({
-      error: 'User not found'
-    })
+    throw new NotFoundError('User not found', { id })
   }
 
   const isCpfDifferent = userData.cpf && (savedUser.cpf !== userData.cpf)
@@ -22,9 +22,7 @@ export const updateUser = async (req: Request, res: Response) => {
       cpf: userData.cpf
     })
     if (existsUserWithCpf) {
-      return res.status(400).json({
-        error: 'Already exists a user with this cpf'
-      })
+      throw DuplicatedIndexError.fromDuplicatedIndexesOfEntity({ cpf: userData.cpf as string }, 'User')
     }
   }
 

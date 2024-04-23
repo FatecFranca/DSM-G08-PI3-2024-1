@@ -33,7 +33,7 @@ app.use((error: any, req: Request, res: Response, next: NextFunction) => {
     break
   default:
     console.log(error)
-    resultError = AppError.InternalServerError('Internal server error')
+    resultError = AppError.internalServerError('Internal server error')
     break
   }
 

@@ -5,6 +5,8 @@ import { z } from 'zod'
 import { env } from '../../configs/env'
 import { userModel } from '../../models/UserModel'
 import { RoleEnum } from '../../types/RoleEnum'
+import { NotFoundError } from '../../errors/NotFoundError'
+import { AppError } from '../../errors/AppError'
 
 const loginBodySchema = z.object({
   email: z.string().email(),
@@ -19,16 +21,12 @@ export const login = async (req: Request, res: Response) => {
   })
 
   if (!user) {
-    return res.status(404).json({
-      message: 'User not found'
-    })
+    throw new NotFoundError('User not found', { email })
   }
 
   const isValidPassword = bcrypt.compareSync(password, user.password)
   if (!isValidPassword) {
-    return res.status(401).json({
-      message: 'Invalid password'
-    })
+    throw AppError.unauthorized('Invalid password')
   }
   
   const token = await jwt.sign({ id: user._id, role: RoleEnum.USER }, env.JWT_SECRET, { expiresIn: '1d' })

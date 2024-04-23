@@ -11,8 +11,16 @@ export class AppError extends Error {
     this.statusCode = statusCode
   }
 
-  static InternalServerError(message: string) {
+  static internalServerError(message: string) {
     return new this(message, WebStatusCodeEnum.InternalServerError)
+  }
+
+  static unauthorized(message: string) {
+    return new this(message, WebStatusCodeEnum.Unauthorized)
+  }
+
+  static forbidden(message: string) {
+    return new this(message, WebStatusCodeEnum.Forbidden)
   }
 
   toJSON() {

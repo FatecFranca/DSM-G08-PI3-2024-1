@@ -1,14 +1,12 @@
 import { Request, Response } from 'express'
-import mongoose from 'mongoose'
-import { z } from 'zod'
+import { AppError } from '../../errors/AppError'
 import { chatModel } from '../../models/ChatModel'
-import { RoleEnum } from '../../types/RoleEnum'
 
 
 export const createChat = async (req: Request, res: Response) => {
   const payload = req.payload
-  if (!payload || payload.role !== RoleEnum.USER) {
-    return res.status(401).json({ message: 'Unauthorized' })
+  if (!payload) {
+    throw AppError.internalServerError('Missing payload in request')
   }
 
   const patient = payload.id as any

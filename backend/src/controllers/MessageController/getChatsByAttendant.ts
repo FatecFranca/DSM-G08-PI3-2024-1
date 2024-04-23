@@ -1,11 +1,12 @@
 import { Request, Response } from 'express'
 import { chatModel } from '../../models/ChatModel'
 import { RoleEnum } from '../../types/RoleEnum'
+import { AppError } from '../../errors/AppError'
 
 export const getChatsByAttendant = async (req: Request, res: Response) => {
   const payload = req.payload
   if (!payload) {
-    return res.status(401).json({ message: 'Unauthorized' })
+    throw AppError.internalServerError('Missing payload in request')
   }
 
   const attendantId = req.params.attendantId
@@ -16,7 +17,7 @@ export const getChatsByAttendant = async (req: Request, res: Response) => {
   const isNotAuthorized = payload.id !== attendantId
 
   if (isNotAdmin && isNotAuthorized) {
-    return res.status(401).json({ message: 'Unauthorized' })
+    throw AppError.forbidden('Forbidden access to chats')
   }
   
   return res.status(200).json(chats)

@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import { employeeModel } from '../../models/EmployeeModel'
+import { NotFoundError } from '../../errors/NotFoundError'
 
 
 export const getEmployeeById = async (req: Request, res: Response) => {
@@ -8,7 +9,7 @@ export const getEmployeeById = async (req: Request, res: Response) => {
   const employee = await employeeQuery.populate('user')
 
   if (!employee) {
-    return res.status(404).json({ message: 'Employee not found' })
+    throw new NotFoundError('Employee not found', { id })
   }
 
   return res.json(employee)
