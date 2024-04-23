@@ -26,4 +26,11 @@ export class DuplicatedIndexError extends AppError {
 
     return new this(message, duplicatedIndexes)
   }
+
+  toJSON() {
+    return {
+      ...super.toJSON(),
+      duplicatedIndexes: this.duplicatedIndexes
+    }
+  }
 }

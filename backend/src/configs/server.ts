@@ -24,19 +24,15 @@ app.get('/api-docs', swaggerUi.setup(swaggerFile, {
 
 app.use((error: any, req: Request, res: Response, next: NextFunction) => {
   let resultError: AppError
-  switch (error.constructor) {
-  case AppError:
+  if (error instanceof AppError) {
     resultError = error
-    break
-  case ZodError:
+  } else if (error instanceof ZodError) {
     resultError = BodyValidationError.fromZodError(error)
-    break
-  default:
+  } else {
     console.log(error)
     resultError = AppError.internalServerError('Internal server error')
-    break
   }
-
+  
   return res.status(resultError.statusCode).json(resultError)
 })
 
