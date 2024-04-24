@@ -192,61 +192,8 @@
             "type": "string",
             "enum": ["admin", "employee"]
           },
-          "name": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
-          },
-          "gender": {
-            "type": "string"
-          },
-          "cpf": {
-            "type": "string"
-          },
-          "data_nascimento": {
-            "type": "string",
-            "format": "date"
-          },
-          "address": {
-            "type": "object",
-            "properties": {
-              "cep": {
-                "type": "string"
-              },
-              "street": {
-                "type": "string"
-              },
-              "num": {
-                "type": "string"
-              },
-              "city": {
-                "type": "string"
-              },
-              "uf": {
-                "type": "string"
-              }
-            }
-          },
-          "healthInfo": {
-            "type": "object",
-            "properties": {
-              "cardiorespiratoryDisease": {
-                "type": "string"
-              },
-              "surgery": {
-                "type": "string"
-              },
-              "allergy": {
-                "type": "string"
-              },
-              "preExistingCondition": {
-                "type": "string"
-              },
-              "medicineInUse": {
-                "type": "string"
-              }
-            }
+          "user": {
+            "$ref": "#/components/schemas/User"
           }
         }
       },
