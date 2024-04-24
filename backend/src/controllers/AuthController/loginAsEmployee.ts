@@ -18,7 +18,7 @@ export const loginAsEmployee = async (req: Request, res: Response) => {
 
   const user = await userModel.findOne({ email })
   if (!user) {
-    throw new NotFoundError('User not found', { email })
+    throw new NotFoundError('Employee not found', { email })
   }
   
   const isPasswordValid = await bcrypt.compare(password, user.password)
@@ -28,7 +28,7 @@ export const loginAsEmployee = async (req: Request, res: Response) => {
 
   const isEmployee = await employeeModel.findOne({ user: user._id })
   if (!isEmployee) {
-    throw AppError.forbidden('User is not an employee')
+    throw new NotFoundError('Employee not found', { email })
   }
 
   const token = jwt.sign({ id: user._id, role: isEmployee.role }, env.JWT_SECRET, { expiresIn: '1d' })
@@ -37,7 +37,7 @@ export const loginAsEmployee = async (req: Request, res: Response) => {
     employee: {
       employeeId: isEmployee._id,
       role: isEmployee.role,
-      ...user.toJSON()
+      user: user.toJSON()
     },
     token
   })

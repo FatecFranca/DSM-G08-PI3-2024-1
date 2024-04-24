@@ -476,6 +476,9 @@
                     "token": {
                       "type": "string",
                       "format": "jwt"
+                    },
+                    "user": {
+                      "$ref": "#/components/schemas/User"
                     }
                   }
                 }
