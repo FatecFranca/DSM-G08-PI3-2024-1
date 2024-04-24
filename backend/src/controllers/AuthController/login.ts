@@ -32,6 +32,7 @@ export const login = async (req: Request, res: Response) => {
   const token = await jwt.sign({ id: user._id, role: RoleEnum.USER }, env.JWT_SECRET, { expiresIn: '1d' })
 
   return res.status(200).json({
-    token
+    token,
+    user
   })
 }
