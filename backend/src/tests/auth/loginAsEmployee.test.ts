@@ -5,8 +5,10 @@ import server from '../../configs/server'
 import { employeeModel } from '../../models/EmployeeModel'
 import { User, userModel } from '../../models/UserModel'
 import { RoleEnum } from '../../types/RoleEnum'
+import { expectedUserBodyFromUserEntity } from '../utils/expectedUserBodyFromUserEntity'
 import { UserFactory } from '../utils/user-factory'
 
+//TODO: Has some colateral effects that make the test fail sometimes. Find out later why. Try to isolate the test by deleting only the created resources
 describe('POST /auth/login-employee', () => {
   let employee: {
     _id: Types.ObjectId,
@@ -153,7 +155,7 @@ describe('POST /auth/login-employee', () => {
     expect(body.token).toEqual(expect.any(String))
     expect(body.employee.role).toBe(RoleEnum.EMPLOYEE)
     expect(body.employee.employeeId).toEqual(employee._id.toString())
-    expect(body.employee.user).toEqual(expectedDataFromUser(employee.user).expectedUser)
+    expect(body.employee.user).toEqual(expectedUserBodyFromUserEntity(employee.user).expectedUser)
   })
 
   it('should return 200 and the body with the admin and token when pass correct credentials', async () => {
@@ -168,28 +170,6 @@ describe('POST /auth/login-employee', () => {
     expect(body.token).toEqual(expect.any(String))
     expect(body.employee.role).toBe(RoleEnum.ADMIN)
     expect(body.employee.employeeId).toEqual(admin._id.toString())
-    expect(body.employee.user).toEqual(expectedDataFromUser(admin.user).expectedUser)
+    expect(body.employee.user).toEqual(expectedUserBodyFromUserEntity(admin.user).expectedUser)
   })
 })
-
-function expectedDataFromUser(user: User) {
-  const expectedAddress = {
-    ...user.address,
-    _id: expect.any(String)
-  }
-
-  const expectedUser = {
-    ...user,
-    _id: expect.any(String),
-    address: expectedAddress,
-    data_nascimento: user.data_nascimento.toISOString(),
-    healthInfo: {
-      ...user.healthInfo,
-      _id: expect.any(String)
-    },
-    password: expect.any(String),
-    __v: expect.any(Number)
-  }
-
-  return { expectedAddress, expectedUser }
-}

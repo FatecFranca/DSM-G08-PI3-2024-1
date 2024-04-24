@@ -10,7 +10,7 @@ import { AppError } from '../../errors/AppError'
 
 const zodCreateEmployeeBodySchema = z.object({
   userId: z.string().refine(Types.ObjectId.isValid, { message: 'Invalid user id' }),
-  role: z.nativeEnum(RoleEnum)
+  role: z.union([z.literal(RoleEnum.ADMIN), z.literal(RoleEnum.EMPLOYEE)])
 })
 
 export const createEmployee = async (req: Request, res: Response) => {

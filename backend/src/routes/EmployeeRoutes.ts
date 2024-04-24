@@ -8,7 +8,7 @@ const employeesRoutes = Router()
 
 employeesRoutes.post('/', authenticated, authorize(AuthorizationPolicy.onlyAdmin(), true), createEmployee)
 employeesRoutes.get('/', authenticated, authorize(AuthorizationPolicy.onlyAdmin()), listEmployees)
-employeesRoutes.get('/:id', authenticated, authorize(AuthorizationPolicy.onlyAdmin()), getEmployeeById)
+employeesRoutes.get('/:id', authenticated, authorize(AuthorizationPolicy.allEmployees()), getEmployeeById)
 employeesRoutes.delete('/:id', authenticated, authorize(AuthorizationPolicy.onlyAdmin()), deleteEmployee)
 
 export default employeesRoutes
