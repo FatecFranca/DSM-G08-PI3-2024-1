@@ -1,13 +1,13 @@
 import { Request } from 'express'
 import jwt from 'jsonwebtoken'
-import { Types } from 'mongoose'
 import { chatModel } from '../models/ChatModel'
 import { RoleEnum } from '../types/RoleEnum'
 import { env } from './env'
 import { io } from './server'
 
 
-const validToken = (token: string): Required<Request>['payload'] => {
+const validToken = (bearerToken: string): Required<Request>['payload'] => {
+  const [bearer, token] = bearerToken.split(' ')
   const payload = jwt.verify(token, env.JWT_SECRET) as Required<Request>['payload']
 
   return payload
@@ -16,21 +16,32 @@ const validToken = (token: string): Required<Request>['payload'] => {
 //TODO: Works more like saga. Where chat has a saga like created, sent, error, received
 const socketRooms: Record<string, string[]> = {}
 io.on('connection', (socket) => {
-  socket.on('chat.enter', async ({token, chatId}) => {
+  console.log('Socket connected: ', socket.id)
+  socket.on('chat.enter', async ({token, chatId}, ack) => {
     let payload: Required<Request>['payload']
     try {
       payload = validToken(token)
     } catch (error) {
-      return socket.emit('chat.enter:error', {message: 'Invalid token', status: 401})
+      return ack({
+        message: 'Invalid token',
+        status: 401
+      })
     }
+
     const chat = await chatModel.findById(chatId)
     if (!chat) {
-      return socket.emit('chat.enter:error', {message: 'Chat not found', status: 404})
+      return ack({
+        message: 'Chat not found',
+        status: 404
+      })
     }
     
-    const inChat = userInChat(chat.patient, chat.attendant, payload)
+    const inChat = userInChat(chat.patient.toString(), chat.attendant?.toString(), payload)
     if (!inChat) {
-      return socket.emit('chat.enter:error', {message: 'User not in chat', status: 401})
+      return ack({
+        message: 'User not in chat',
+        status: 401
+      })
     }
 
     if (!socketRooms[socket.id]) {
@@ -40,40 +51,30 @@ io.on('connection', (socket) => {
     socketRooms[socket.id].push(`chat:${chatId}`)
 
     socket.join(`chat:${chatId}`)
+
+    return ack({
+      chat: chat.toJSON(),
+      status: 200
+    })
   })
 
-  socket.on('chat.message.add', ({token, chatId, message}) => {
-    let payload: Required<Request>['payload']
-    try {
-      payload = validToken(token)
-    } catch (error) {
-      return socket.emit('chat.message.add:error', {message: 'Invalid token', status: 401})
-    }
-    const chat = chatModel.findById(chatId)
-    if (!chat) {
-      return socket.emit('chat.message.add:error', {message: 'Chat not found', status: 404})
-    }
-
-    io.to(`chat:${chatId}`).emit('chat.message.add:sucess', {message})
-  })
-
-  socket.on('disconnect', () => {
-    console.log('disconnect', socket.id)
+  socket.on('disconnect', async () => {
     const rooms = socketRooms[socket.id]
     if (rooms) {
-      rooms.forEach(room => {
-        socket.leave(room)
+      const promises = rooms.map(room => {
+        return socket.leave(room)
       })
+      await Promise.all(promises)
     }
   })
 })
 
-function userInChat(patient: Types.ObjectId, attendant: Types.ObjectId|null|undefined, payload: Required<Request>['payload']): boolean {
+function userInChat(patient: string, attendant: string|undefined, payload: Required<Request>['payload']): boolean {
   let inChat = false
   if (payload.role === RoleEnum.USER) {
-    inChat = patient === payload.id as unknown as Types.ObjectId
-  } {
-    inChat = attendant === payload.id as unknown as Types.ObjectId
+    inChat = patient === payload.id
+  } else if (payload.role === RoleEnum.EMPLOYEE) {
+    inChat = attendant === payload.id
   }
 
   return inChat

@@ -1,6 +1,15 @@
 import { Schema, Types, model } from 'mongoose'
 import { z } from 'zod'
-import { zodAddressSchema } from './AddressModel'
+import { isValid } from '@fnando/cpf'
+
+export const zodAddressSchema = z.object({
+  _id: z.instanceof(Types.ObjectId).optional(),
+  cep: z.string(),
+  street: z.string(),
+  num: z.string(),
+  city: z.string(),
+  uf: z.string(),
+})
 
 export const zodUserSchema = z.object({
   _id: z.instanceof(Types.ObjectId).optional(),
@@ -9,7 +18,9 @@ export const zodUserSchema = z.object({
   gender: z.string(),
   password: z.string(),
   email: z.string().email(),
-  cpf: z.string(),
+  cpf: z.string().refine((cpf) => {
+    return isValid(cpf)
+  }, { message: 'Invalid CPF' }),
   data_nascimento: z.coerce.date(),
   address: zodAddressSchema,
   healthInfo: z.object({
@@ -57,8 +68,28 @@ const UserSchema = new Schema({
     required: true
   },
   address: {
-    type: Schema.Types.ObjectId,
-    ref: 'Address',
+    type: {
+      cep: {
+        type: String,
+        required: true
+      },
+      street: {
+        type: String,
+        required: true
+      },
+      num: {
+        type: String,
+        required: true
+      },
+      city: {
+        type: String,
+        required: true
+      },
+      uf: {
+        type: String,
+        required: true
+      },
+    },
     required: true
   },
   healthInfo: {

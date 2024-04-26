@@ -2,18 +2,23 @@ import { Request, Response } from 'express'
 import { Types } from 'mongoose'
 import { z } from 'zod'
 import { chatModel } from '../../models/ChatModel'
-
-const zodAcceptChatSchema = z.object({
-  attendant: z.instanceof(Types.ObjectId),
-})
+import { RoleEnum } from '../../types/RoleEnum'
+import { AppError } from '../../errors/AppError'
+import { NotFoundError } from '../../errors/NotFoundError'
 
 export const acceptChat = async (req: Request, res: Response) => {
-  const { attendant } = zodAcceptChatSchema.parse(req.body)
+  const payload = req.payload
+  if (!payload) {
+    throw AppError.internalServerError('Payload not found')
+  }
+
+  const attendant = payload.id as any
+
   const chatId = req.params.chatId
 
   const chat = await chatModel.findById(chatId)
   if (!chat) {
-    return res.status(404).json({ message: 'Chat not found' })
+    throw new NotFoundError('Chat not found', { id: chatId })
   }
 
   chat.attendant = attendant

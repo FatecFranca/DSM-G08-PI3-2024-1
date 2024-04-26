@@ -4,11 +4,13 @@ import { employeeModel } from '../../models/EmployeeModel'
 import { RoleEnum } from '../../types/RoleEnum'
 import mongoose, { Types } from 'mongoose'
 import { userModel } from '../../models/UserModel'
+import { NotFoundError } from '../../errors/NotFoundError'
+import { AppError } from '../../errors/AppError'
 
 
 const zodCreateEmployeeBodySchema = z.object({
   userId: z.string().refine(Types.ObjectId.isValid, { message: 'Invalid user id' }),
-  role: z.nativeEnum(RoleEnum)
+  role: z.union([z.literal(RoleEnum.ADMIN), z.literal(RoleEnum.EMPLOYEE)])
 })
 
 export const createEmployee = async (req: Request, res: Response) => {
@@ -16,13 +18,13 @@ export const createEmployee = async (req: Request, res: Response) => {
   if (role === RoleEnum.ADMIN) {
     const existAdmin = await employeeModel.findOne({ role: RoleEnum.ADMIN })
     if (existAdmin) {
-      return res.status(403).json({ message: 'Admin already exists' })
+      throw AppError.forbidden('Admin already exists')
     }
   }
 
   const existUser = await userModel.findById(userId)
   if (!existUser) {
-    return res.status(404).json({ message: 'User not found' })
+    throw new NotFoundError('User not found', { userId })
   }
 
   const employee = await employeeModel.create({ user: userId, role })

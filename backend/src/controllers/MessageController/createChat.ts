@@ -1,13 +1,15 @@
 import { Request, Response } from 'express'
-import mongoose from 'mongoose'
-import { z } from 'zod'
+import { AppError } from '../../errors/AppError'
 import { chatModel } from '../../models/ChatModel'
 
-const zodCreateChatSchema = z.object({
-  patient: z.instanceof(mongoose.Types.ObjectId),
-})
+
 export const createChat = async (req: Request, res: Response) => {
-  const { patient } = zodCreateChatSchema.parse(req.body)
+  const payload = req.payload
+  if (!payload) {
+    throw AppError.internalServerError('Missing payload in request')
+  }
+
+  const patient = payload.id as any
 
   const newChat = await chatModel.create({
     patient,

@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node-dev src/index.ts",
-    "test": "jest --runInBand",
+    "start": "ts-node-dev src/index.ts --transpile-only",
+    "test": "jest",
     "test:watch": "jest --runInBand --watchAll"
   },
   "keywords": [],
@@ -20,6 +20,7 @@
     "@types/jest": "^29.5.12",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/supertest": "^6.0.2",
+    "@types/swagger-ui-express": "^4.1.6",
     "@typescript-eslint/eslint-plugin": "^7.3.1",
     "@typescript-eslint/parser": "^7.3.1",
     "eslint": "^8.57.0",
@@ -38,7 +39,10 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.2.3",
     "socket.io": "^4.7.5",
+    "socket.io-client": "^4.7.5",
     "supertest": "^6.3.4",
+    "swagger-autogen": "^2.23.7",
+    "swagger-ui-express": "^5.0.0",
     "zod": "^3.22.4"
   }
 }
