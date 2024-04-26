@@ -7,7 +7,7 @@ describe('POST /users', () => {
   let user: User
   let expectedAddress: any
   let expectedUser: any
-
+  const createdUsersIds: Set<string> = new Set()
   beforeAll(async () => {
     user = UserFactory.random()
 
@@ -28,7 +28,9 @@ describe('POST /users', () => {
   })
 
   afterEach(async () => {
-    await userModel.deleteMany({})
+    for (const id of createdUsersIds) {
+      await userModel.deleteMany({ _id: id})
+    }
   })
 
   it('should return status 201 and created user', async () => {
@@ -36,6 +38,7 @@ describe('POST /users', () => {
       .post('/users')
       .send(user)
       .expect(201)
+    createdUsersIds.add(response.body._id)
     
     const savedUser = await userModel.findById(response.body._id)
     expect(savedUser).toBeTruthy()
@@ -48,6 +51,8 @@ describe('POST /users', () => {
       .post('/users')
       .send(user)
       .expect(201)
+    createdUsersIds.add(body._id)
+
     const savedUser = await userModel.findById(body._id)
     expect(savedUser).toBeTruthy()
   })
@@ -57,6 +62,7 @@ describe('POST /users', () => {
       .post('/users')
       .send(user)
       .expect(201)
+    createdUsersIds.add(body._id)
     const savedUser = await userModel.findById(body._id)
 
     expect(savedUser).toBeTruthy()
@@ -79,9 +85,8 @@ describe('POST /users', () => {
 
   it('should return 400 if already exists a user with this email', async () => {
     const anotherUser = UserFactory.random()
-    const existentUser = new userModel({...anotherUser, email: user.email})
-  
-    await existentUser.save()
+    const existentUser = await userModel.create({...anotherUser, email: user.email})
+    createdUsersIds.add(existentUser._id.toString())
     
     const { body } = await supertest(server)
       .post('/users')
@@ -94,9 +99,8 @@ describe('POST /users', () => {
 
   it('should return 400 if already exists a user with this cpf', async () => {
     const anotherUser = UserFactory.random()
-    const existentUser = new userModel({...anotherUser, cpf: user.cpf})
-
-    await existentUser.save()
+    const existentUser = await userModel.create({...anotherUser, cpf: user.cpf})
+    createdUsersIds.add(existentUser._id.toString())
     
     const { body } = await supertest(server)
       .post('/users')
@@ -109,8 +113,8 @@ describe('POST /users', () => {
 
   it('should return 400 if alread exists a user with this email and cpf', async () => {
     const anotherUser = UserFactory.random()
-    const existentUser = new userModel({...anotherUser, email: user.email, cpf: user.cpf})
-    await existentUser.save()
+    const existentUser = await userModel.create({...anotherUser, email: user.email, cpf: user.cpf})
+    createdUsersIds.add(existentUser._id.toString())
 
     const { body } = await supertest(server)
       .post('/users')

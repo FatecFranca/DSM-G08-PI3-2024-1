@@ -56,6 +56,16 @@ describe('PUT /users/:id', () => {
     })
   })
 
+  afterAll(async () => {
+    await userModel.deleteMany({
+      _id: createdUserId
+    })
+
+    await Promise.all(createdUsersIds.map(async id => {
+      await userModel.deleteMany({ _id: id })
+    }))
+  })
+
   it('should return 401 if user is not authenticated', async () => {
     await supertest(server)
       .put(`/users/${createdUserId}`)

@@ -7,6 +7,7 @@ import { User, userModel } from '../../models/UserModel'
 import { RoleEnum } from '../../types/RoleEnum'
 import { expectedUserBodyFromUserEntity } from '../utils/expectedUserBodyFromUserEntity'
 import { UserFactory } from '../utils/user-factory'
+import jwt from 'jsonwebtoken'
 
 //TODO: Has some colateral effects that make the test fail sometimes. Find out later why. Try to isolate the test by deleting only the created resources
 describe('POST /auth/login-employee', () => {
@@ -171,5 +172,19 @@ describe('POST /auth/login-employee', () => {
     expect(body.employee.role).toBe(RoleEnum.ADMIN)
     expect(body.employee.employeeId).toEqual(admin._id.toString())
     expect(body.employee.user).toEqual(expectedUserBodyFromUserEntity(admin.user).expectedUser)
+  })
+
+  it('should return 200 and its token should have the employee id and role in the payload', async () => {
+    const { body } = await supertest(server)
+      .post('/auth/login-employee')
+      .send({
+        email: employee.user.email,
+        password: employee.password
+      })
+      .expect(200)
+
+    const decoded = jwt.decode(body.token) as any
+    expect(decoded.id).toBe(employee._id.toString())
+    expect(decoded.role).toBe(RoleEnum.EMPLOYEE)
   })
 })
