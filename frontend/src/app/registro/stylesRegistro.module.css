@@ -1,0 +1,447 @@
+
+.container {
+background-color: #ffffff;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  min-height: 100vh; 
+    width: 100%;
+    height: 1080px;
+    overflow: hidden; /* Isso previne o scroll */
+}
+.formulariocadastro{
+    border: 1px solid #ccc;
+    width: 70%; 
+    height: 700px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 10px;
+    
+}
+
+.imageContainer {  
+    position: relative;
+    left: 22%;
+    bottom: 400px;
+}
+.formRegistro{
+    
+    max-height: 680px;
+}
+.formRegistro .dadosPessoais h3{
+    
+    font-weight: 600;
+    color: #2E8ABE;
+    width: 200px;
+    margin-bottom: 2%;
+    
+}
+
+.formRegistro .dadosEndereco h3{
+    
+    font-weight: 600;
+    color: #2E8ABE;
+    width: 200px;
+    position: relative;
+    bottom: 340px;    
+    margin-bottom: 3%;
+}
+
+.formRegistro input[type="text"],
+.formRegistro input[type="password"] {
+  width: 25%;
+  padding: 10px;
+  margin-bottom: 30px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+ 
+}
+.formRegistro .nome label {
+    font-size: 10;
+    font-weight: 600;
+    color: #000;
+}
+.formRegistro .nome{
+    width: 40%;
+}
+.formRegistro .nome input {
+    width: 80%;
+    margin-top: 5px;
+    display: flex;
+    background-color: #FFFFFF;
+    color: #000000;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+}  
+.formRegistro .nome input {
+    margin-right: 2%;  
+}
+
+.formRegistro .sobrenome label {
+    font-size: 10;
+    font-weight: 600;
+    color: #000;
+}
+.formRegistro .sobrenome{
+    width: 40%;
+    position: relative;
+    left: 36%;
+    bottom: 90px;
+    
+}
+.formRegistro .sobrenome input {
+    width: 80%;
+    margin-top: 5px;
+    background-color: #FFFFFF;
+    display: flex;
+    color: #000000;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+}  
+
+
+.formRegistro .cpf input {
+    width: 80%;
+    margin-top: 5px;
+    background-color: #FFFFFF;
+    display: flex;
+    color: #000000;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.formRegistro .cpf{
+    width: 40%;
+    
+    position: relative;
+    bottom: 100px;
+}
+.formRegistro .cpf label {
+    font-size: 10;
+    font-weight: 600;
+    color: #000;
+}
+
+
+
+.formRegistro .dataNascimento {
+    position: relative;
+    left: 36%;
+    bottom: 192px;
+}
+.formRegistro .dataNascimento label {
+    font-size: 10;
+    font-weight: 600;
+    color: #000;
+}
+.formRegistro .dataNascimento input {
+    width: 16%;
+    margin-top: 5px;
+    background-color: #ccc;
+    display: flex;
+    color: #000000;
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 09px;
+    
+}
+
+.formRegistro .sexo{
+    width: 400px;
+    height: auto;
+    color: #000;
+    position: relative;
+    left: 55%;
+    bottom: 220px;
+    align-items: center;    
+}
+
+.formRegistro .sexo label {
+    font-size: 10;
+    font-weight: 600;
+    
+}
+.formRegistro .sexo input {
+    cursor: pointer;
+    
+}
+
+.formRegistro .email {
+    width: 40%;
+    position: relative;
+    bottom: 200px;
+    
+}
+.formRegistro .email input {
+    width: 80%;
+    margin-top: 5px;
+    display: flex;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px;
+    color: #000;
+    background-color: #FFFFFF;
+}
+.formRegistro .email label {
+    font-size: 10;
+    font-weight: 600;
+    color: #000;
+}
+
+
+.formRegistro .senha {
+    width: 30%;
+    position: relative;
+    bottom: 262px;
+    left: 36%;
+}
+.formRegistro .senha input {
+    width: 80%;
+    margin-top: 5px;
+    display: flex;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px;
+    color: #000;
+    background-color: #FFFFFF;
+}
+.formRegistro .senha label {
+    font-size: 10;
+    font-weight: 600;
+    color: #000;
+}
+
+
+
+.formRegistro .confirmaSenha{
+    width: 30%;
+    position: relative;
+    bottom: 354px;
+    left: 65%;
+}
+.formRegistro .confirmaSenha input {
+    width: 80%;
+    margin-top: 5px;
+    display: flex;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px;
+    color: #000;
+    background-color: #FFFFFF;
+}
+.formRegistro .confirmaSenha label {
+    font-size: 10;
+    font-weight: 600;
+    color: #000;
+}
+
+
+.formRegistro .rua{
+    width: 40%;
+    position: relative;
+    bottom: 354px;
+    left: 0%;
+}
+.formRegistro .rua input {
+    width: 80%;
+    margin-top: 5px;
+    display: flex;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px;
+    color: #000;
+    background-color: #FFFFFF;
+}
+.formRegistro .rua label {
+    font-size: 10;
+    font-weight: 600;
+    color: #000;
+}
+
+.formRegistro .numero{
+    width: 30%;
+    position: relative;
+    bottom: 445px;
+    left: 36%;
+}
+.formRegistro .numero input {
+    width: 80%;
+    margin-top: 5px;
+    display: flex;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px;
+    color: #000;
+    background-color: #FFFFFF;
+}
+.formRegistro .numero label {
+    font-size: 10;
+    font-weight: 600;
+    color: #000;
+}
+
+.formRegistro .bairro{
+    width: 30%;
+    position: relative;
+    bottom: 535px;
+    left: 65%;
+}
+.formRegistro .bairro input {
+    width: 80%;
+    margin-top: 5px;
+    display: flex;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px;
+    color: #000;
+    background-color: #FFFFFF;
+}
+.formRegistro .bairro label {
+    font-size: 10;
+    font-weight: 600;
+    color: #000;
+}
+
+
+
+.formRegistro .cidade{
+    width: 40%;
+    position: relative;
+    bottom: 540px;
+    left: 0%;
+}
+.formRegistro .cidade input {
+    width: 80%;
+    margin-top: 5px;
+    display: flex;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px;
+    color: #000;
+    background-color: #FFFFFF;
+}
+.formRegistro .cidade label {
+    font-size: 10;
+    font-weight: 600;
+    color: #000;
+}
+
+
+
+.formRegistro .cep{
+    width: 30%;
+    position: relative;
+    bottom: 632px;
+    left: 36%;
+}
+.formRegistro .cep input {
+    width: 80%;
+    margin-top: 5px;
+    display: flex;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px;
+    color: #000;
+    background-color: #FFFFFF;
+}
+.formRegistro .cep label {
+    font-size: 10;
+    font-weight: 600;
+    color: #000;
+}
+
+
+
+.formRegistro .complemento{
+    width: 30%;
+    position: relative;
+    bottom: 724px;
+    left: 65%;
+}
+.formRegistro .complemento input {
+    width: 80%;
+    margin-top: 5px;
+    display: flex;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px;
+    color: #000;
+    background-color: #FFFFFF;
+}
+.formRegistro .complemento label {
+    font-size: 10;
+    font-weight: 600;
+    color: #000;
+}
+
+.formRegistro .checkbox input{
+    cursor: pointer;
+    position: relative;
+    bottom: 670px;
+    left: 0%;
+}
+.formRegistro .checkbox label{
+    cursor: pointer;
+    position: relative;
+    bottom: 670px;
+    left: 1%;
+}
+.formRegistro .checkbox label {
+    font-size: 10;
+    font-weight: 600;
+    color: #000;
+}
+
+
+.formRegistro .checkboxx {
+    width: 30%;
+    margin-top: 5px;
+    border-radius: 5px;
+    padding-top: 20px;
+    bottom: 255px;
+    left: 65%;
+    position: relative;
+    flex-direction: column;
+    display: flex;
+    margin-bottom: -80px;
+}
+.formRegistro .checkboxx p {
+    font-size: 10;
+    font-weight: 600;
+    color: #000;
+    position: relative;
+    width: 60%;
+    bottom: 80px;
+}
+
+
+.formRegistro button {
+  width: 20%;
+  padding: 20px;
+  background-color: #43A4CE;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  position: relative;
+  bottom: 700px;
+  left: 70%;
+}
+
+.formRegistro button:hover {
+  background-color: #2E8ABE; /* Cor mais escura ao passar o mouse */
+}

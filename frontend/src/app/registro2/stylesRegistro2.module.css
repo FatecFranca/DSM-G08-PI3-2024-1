@@ -1,0 +1,147 @@
+.container {
+    background-color: #ffffff;
+      align-items: center;
+      justify-content: center;
+      display: flex;
+      min-height: 100vh; 
+        width: 100%;
+        height: 1080px;
+        overflow: hidden; 
+}
+.formulariocadastro{
+        border: 1px solid #ccc;
+        width: 70%; 
+        height: 700px;
+        margin: 0 auto;
+        padding: 20px;
+        border-radius: 10px;
+        
+}
+    
+
+.imageContainer {  
+      position: relative;
+      left: 22%;
+      bottom: 400px;
+}
+.formRegistro{
+      
+      max-height: 680px;
+}
+.formRegistro .dadosPessoais h3{
+      
+      font-weight: 600;
+      color: #2E8ABE;
+      width: 200px;
+      margin-bottom: 2%;
+}
+
+
+.formRegistro input[type="text"],
+.formRegistro input[type="password"] {
+  width: 40%;
+  padding: 10px;
+  margin-bottom: 30px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.formRegistro .cardiorespiratorio label {
+  font-size: 10;
+  font-weight: 600;
+  color: #000;
+}
+.formRegistro .cardiorespiratorio input {
+  width: 80%;
+  margin-top: 5px;
+  display: flex;
+  background-color: #FFFFFF;
+  color: #000000;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+} 
+
+.formRegistro .cirurgia label {
+  font-size: 10;
+  font-weight: 600;
+  color: #000;
+}
+.formRegistro .cirurgia input {
+  width: 80%;
+  margin-top: 5px;
+  background-color: #FFFFFF;
+  display: flex;
+  color: #000000;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+}  
+
+.formRegistro .historico label {
+  font-size: 10;
+  font-weight: 600;
+  color: #000;
+}
+.formRegistro .historico input {
+  width: 80%;
+  margin-top: 5px;
+  background-color: #FFFFFF;
+  display: flex;
+  color: #000000;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+}  
+
+
+
+.formRegistro .medicamentos label {
+  font-size: 10;
+  font-weight: 600;
+  color: #000;
+}
+.formRegistro .medicamentos input {
+  width: 80%;
+  margin-top: 5px;
+  background-color: #FFFFFF;
+  display: flex;
+  color: #000000;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+}  
+
+
+.formRegistro .checkbox input{
+  cursor: pointer;
+  position: relative;
+}
+.formRegistro .checkbox label{
+  cursor: pointer;
+  position: relative;
+}
+.formRegistro .checkbox label {
+  font-size: 10;
+  font-weight: 600;
+  color: #000;
+}
+
+.formRegistro button {
+  width: 20%;
+  padding: 20px;
+  background-color: #43A4CE;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  position: relative;
+  margin-top: 30px;
+}
+
+.formRegistro button:hover {
+  background-color: #2E8ABE; /* Cor mais escura ao passar o mouse */
+}
