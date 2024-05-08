@@ -16,7 +16,6 @@ const validToken = (bearerToken: string): Required<Request>['payload'] => {
 //TODO: Works more like saga. Where chat has a saga like created, sent, error, received
 const socketRooms: Record<string, string[]> = {}
 io.on('connection', (socket) => {
-  console.log('Socket connected: ', socket.id)
   socket.on('chat.enter', async ({token, chatId}, ack) => {
     let payload: Required<Request>['payload']
     try {

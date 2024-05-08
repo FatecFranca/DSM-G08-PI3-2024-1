@@ -19,9 +19,9 @@ export const getChatById = async (req: Request, res: Response) => {
     throw new NotFoundError('Chat not found', { id: chatId })
   }
   const isNotAdmin = payload.role !== RoleEnum.ADMIN
-  const isNotAuthorized = ![chat.patient, chat.attendant].includes(payload.id as any)
+  const isNotInChat = ![chat.patient, chat.attendant].includes(payload.id as any)
 
-  if (isNotAdmin && isNotAuthorized) {
+  if (isNotAdmin && isNotInChat) {
     throw AppError.forbidden('Forbidden access to chat')
   }
 
