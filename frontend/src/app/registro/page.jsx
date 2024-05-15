@@ -2,12 +2,10 @@
 import { LinkButton } from "@/components/LinkButton"
 import { Container } from "../styles"
 import { Button } from "@/components/Button"
-import { useRouter } from "next/navigation"
 import stylesRegistro from './stylesRegistro.module.css'
 import { useState } from 'react'
 import Image from 'next/image'
-
-
+import { useRouter } from 'next/navigation'
 
 
 export default function RegistrationForm() {
@@ -29,8 +27,8 @@ export default function RegistrationForm() {
   const options = ['Feminino', 'Masculino'];
 
   const [isChecked, setIsChecked] = useState(false);
-
   const [selectedOptions, setSelectedOptions] = useState([]);
+  const router = useRouter()
 
     const handleOptionChange = (option) => {
         if (selectedOptions.includes(option)) {
@@ -76,6 +74,8 @@ export default function RegistrationForm() {
     setBairro('');
     setComplemento('');
     setNumero('');
+
+    router.push('/registro2')
   };
 
   return (
@@ -312,7 +312,7 @@ export default function RegistrationForm() {
                     </div>
 
                     
-                    <button type="button">
+                    <button type="submit">
                         Avançar
                     </button>
                 </form>
