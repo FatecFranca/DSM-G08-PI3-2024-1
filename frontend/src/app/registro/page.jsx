@@ -1,11 +1,8 @@
 'use client'
-import { LinkButton } from "@/components/LinkButton"
-import { Container } from "../styles"
-import { Button } from "@/components/Button"
-import stylesRegistro from './stylesRegistro.module.css'
-import { useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import stylesRegistro from './stylesRegistro.module.css'
 
 
 export default function RegistrationForm() {
