@@ -17,9 +17,9 @@ const handler = NextAuth({
         asEmployee: { label: "As Employee", type: "checkbox" }
       },
       async authorize(credentials, req) {
-
+        
         let session=null
-        if (credentials.asEmployee){
+        if (credentials.asEmployee === true || credentials.asEmployee === 'true'){
           const res = await fetch('http://localhost:8080/auth/login-employee', {
             method: 'POST',
             body: JSON.stringify({
@@ -41,7 +41,8 @@ const handler = NextAuth({
               apiToken: data.token
             }
           }
-        } else {
+        } else if (credentials.asEmployee === false || credentials.asEmployee === 'false') {
+          
           const res = await fetch('http://localhost:8080/auth/login', {
             method: 'POST',
             body: JSON.stringify({
@@ -52,7 +53,7 @@ const handler = NextAuth({
               'Content-Type': 'application/json',
             },
           })
-
+          
           if (res.ok) {
             const data = await res.json()
             session = {
@@ -78,7 +79,7 @@ const handler = NextAuth({
       if (user) {
         return {
           ...token,
-          apiToken: user.apiToken,
+          user: user,
         }
       }
 
@@ -86,7 +87,7 @@ const handler = NextAuth({
     },
     session: async ({ session, token }) => {
       if (token) {
-        session.apiToken = token.apiToken
+        session.user = token.user
       }
 
       return session
