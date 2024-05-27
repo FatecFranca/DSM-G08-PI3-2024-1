@@ -1,10 +1,16 @@
 'use client'
-import { LinkButton } from "@/components/LinkButton"
-import { Container } from "./styles"
 import { Button } from "@/components/Button"
-import { useRouter } from "next/navigation"
+import { LinkButton } from "@/components/LinkButton"
+import { useSession } from "next-auth/react"
+import { redirect, useRouter } from "next/navigation"
+import { Container } from "./styles"
 
 export default function Home() {
+  const session = useSession()
+  if (!session || !session.user) {
+    return redirect("/login")
+  }
+
   const router = useRouter()
   const handleNewChatClick = () => {
     //implement logic to comunicate to backend to create a new chat and receive its id
