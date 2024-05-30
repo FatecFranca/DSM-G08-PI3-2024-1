@@ -1,6 +1,6 @@
 'use client'
 import { LinkButton } from "@/components/LinkButton"
-import { Container } from "../styles"
+import { Container } from "../../styles"
 import { Button } from "@/components/Button"
 import { useRouter } from "next/navigation"
 import stylesRegistro from './stylesRegistro2.module.css'

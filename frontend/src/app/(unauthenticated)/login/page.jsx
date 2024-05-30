@@ -1,40 +1,41 @@
 'use client'
 import { signIn, useSession } from "next-auth/react"
 import Image from 'next/image'
+import { redirect, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import styles from './styles.module.css'
-import { useRouter } from "next/navigation"
 
 
 
 function LoginForm() {
   const session = useSession()
-  console.log('session', session)
+  
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const router = useRouter()
   const handleEmailChange = (e) => {
     setEmail(e.target.value)
   }
-
+  
   const handlePasswordChange = (e) => {
     setPassword(e.target.value)
   }
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault()
-
+    
     if (!email.trim() || !password.trim()) return
-
+    
     await signIn('credentials', {
       email, password, asEmployee: false
     })
-
-    // router.push('/')
-
-    // setEmail('')
-    // setPassword('')
+    
+    return router.replace('/')
   }
+
+  // if (session.status === 'authenticated') {
+  //   return redirect('/')
+  // }
 
   return (
     <div className={styles.container}>
@@ -93,7 +94,6 @@ function LoginForm() {
             className={styles.input}
 
           />
-
         </div>
 
         <button type="submit" className={styles.button}>Login</button>
