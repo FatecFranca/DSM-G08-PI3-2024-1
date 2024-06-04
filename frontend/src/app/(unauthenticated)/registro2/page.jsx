@@ -38,6 +38,10 @@ export default function RegistrationForm2() {
                     preExistingCondition: historico,
                     medicineInUse: medicamentos
                 },
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
             })
             console.log(response.data)
             localStorage.removeItem('token')
