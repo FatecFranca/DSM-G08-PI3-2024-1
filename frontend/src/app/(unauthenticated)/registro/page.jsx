@@ -39,23 +39,6 @@ export default function RegistrationForm() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        //
-        console.log('Dados enviados:')
-        console.log('Nome:', nome)
-        console.log('Sobrenome:', sobrenome)
-        console.log('CPF:', cpf)
-        console.log('Data de Nascimento:', dataNascimento)
-        console.log('Genero', genero)
-        console.log('Email:', email)
-        console.log('Senha:', senha)
-        console.log('Confirmação de Senha:', confirmaSenha)
-        console.log('Rua:', rua)
-        console.log('Cidade:', cidade)
-        console.log('Estado:', estado)
-        console.log('CEP:', cep)
-        console.log('Bairro:', bairro)
-        console.log('Complemento:', complemento)
-        console.log('Número:', numero)
 
         try {
             const response = await api.post('/users', {
@@ -74,9 +57,19 @@ export default function RegistrationForm() {
                     uf: 'SP'
                 }
             })
-            
-            router.push('/registro2')
-            
+
+            try {
+                const loginResponse = await api.post('/auth', {
+                    email, password: senha
+                })
+
+                localStorage.setItem('token', loginResponse.data.token)
+            } catch (error) {
+                router.push('/login')
+            }
+
+
+            router.push('/registro2?userId=' + response.data._id)
         } catch (error) {
             console.log('Erro ao enviar dados:', error)
         }
