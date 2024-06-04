@@ -61,7 +61,7 @@ export default function RegistrationForm() {
             const response = await api.post('/users', {
                 name: nome,
                 lastName: sobrenome,
-                gender: genero,
+                gender: 'Undefined',
                 password: senha,
                 email: email,
                 cpf: cpf,
@@ -71,14 +71,12 @@ export default function RegistrationForm() {
                     street: rua,
                     num: numero,
                     city: cidade,
-                    uf: estado
+                    uf: 'SP'
                 }
             })
-            if (response.status !== 201) {
-                router.push('/registro2')
-            } else {
-                console.log('Erro ao enviar dados:', response)
-            }
+            
+            router.push('/registro2')
+            
         } catch (error) {
             console.log('Erro ao enviar dados:', error)
         }
