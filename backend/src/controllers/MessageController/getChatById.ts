@@ -5,6 +5,7 @@ import { AppError } from '../../errors/AppError'
 import { NotFoundError } from '../../errors/NotFoundError'
 
 export const getChatById = async (req: Request, res: Response) => {
+  //@ts-ignore
   const payload = req.payload
   if (!payload) {
     throw AppError.internalServerError('Missing payload in request')
@@ -19,7 +20,7 @@ export const getChatById = async (req: Request, res: Response) => {
     throw new NotFoundError('Chat not found', { id: chatId })
   }
   const isNotAdmin = payload.role !== RoleEnum.ADMIN
-  const isNotInChat = ![chat.patient, chat.attendant].includes(payload.id as any)
+  const isNotInChat = ![chat.patient.toString(), chat.attendant?.toString()].includes(payload.id)
 
   if (isNotAdmin && isNotInChat) {
     throw AppError.forbidden('Forbidden access to chat')

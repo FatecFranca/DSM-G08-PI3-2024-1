@@ -10,12 +10,13 @@ export const AuthenticatedProvider = ({ children, session }) => {
   if (!session || !session.data) {
     throw new Error('AuthenticatedProvider requires a session object')
   }
-  
+  console.log(session.data) 
   const userSession = {
     apiToken: session.data.user.apiToken,
     id: session.data.user.id,
     name: session.data.user.name,
-    email: session.data.user.email
+    email: session.data.user.email,
+    role: session.data.role
   }
 
   if (!userSession.apiToken && !userSession.id) {

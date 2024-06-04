@@ -35,7 +35,7 @@ const handler = NextAuth({
             const data = await res.json()
             session = {
               id: data.employeeId,
-              role: data.role,
+              role: 'employee',
               name: data.user.name,
               email: data.user.email,
               apiToken: data.token
@@ -60,11 +60,12 @@ const handler = NextAuth({
               id: data.user._id,
               name: data.user.name,
               email: data.user.email,
-              apiToken: data.token
+              apiToken: data.token,
+              role: 'user'
             }
           }
         }
-
+        
         return session
       },
     })

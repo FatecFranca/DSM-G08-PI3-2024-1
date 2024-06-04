@@ -715,7 +715,7 @@
       }
     },
     "/chats/{id}/accept": {
-      "post": {
+      "put": {
         "tags": ["chats"],
         "summary": "Accept chat",
         "operationId": "acceptChat",

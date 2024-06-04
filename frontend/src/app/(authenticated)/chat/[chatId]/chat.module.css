@@ -1,0 +1,67 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  font-family: Arial, sans-serif;
+  justify-content: space-between;
+  max-width: 600px;
+  height: 90vh;
+  margin: 20px auto 20px auto;
+  background-color: #62849b;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow-y: scroll;
+}
+
+.form {
+  background: #434758;
+  padding: 1rem;
+}
+
+.formField {
+  border: 1px solid #dcdcdc;
+  border-radius: 5px;
+  color: #333;
+  font-size: 1.2rem;
+  padding: 0.4rem 1rem;
+  width: 100%;
+}
+
+.formField:focus {
+  border-color: #a3f7ff;
+  box-shadow: 0 0 7px #a3f7ff;
+  outline: none;
+}
+
+.list {
+  margin: 0;
+  padding: 1rem;
+}
+
+.listItem {
+  list-style: none;
+}
+
+.listItem.listItemMine {
+  text-align: right;
+}
+
+.message {
+  border: 1px solid transparent;
+  text-align: right;
+  border-radius: 5px;
+  display: inline-block;
+  list-style: none;
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem;
+}
+
+.message.messageMine {
+  background: #c3e88d;
+  border-color: #82be27;
+  text-align: right;
+}
+
+.message.messageOther {
+  background: #89ddff;
+  border-color: #1abeff;
+}

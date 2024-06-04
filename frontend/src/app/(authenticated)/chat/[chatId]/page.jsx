@@ -1,66 +1,70 @@
 'use client'
-import React, { useEffect, useState } from "react";
-import io from 'socket.io-client';
+import { useEffect, useState } from "react"
+import io from 'socket.io-client'
+import styles from './chat.module.css'
+import { ChatContainer, Container, FormField, MessageInputForm, MessageItem, ReceivedMessageItem } from "./styles"
 
-const myId = "testemsg"; 
+const myId = "testemsg"
 
-const socket = io('http://localhost:8080/');
-socket.on('connect', () => console.log('[IO] Connect => A new connection has been established'));
+const socket = io('http://localhost:8080/')
+socket.on('connect', () => console.log('[IO] Connect => A new connection has been established'))
 
 const Chat = () => {
-  const [message, updateMessage] = useState(""); 
-  const [messages, updateMessages] = useState([]);
+  const [message, updateMessage] = useState("")
+  const [messages, updateMessages] = useState([])
 
   useEffect(() => {
     const handleNewMessage = (newMessage) => {
-      updateMessages([...messages, newMessage]);
-    };
+      updateMessages([...messages, newMessage])
+    }
 
-    socket.on('chat.message', handleNewMessage);
+    socket.on('chat.message', handleNewMessage)
 
     return () => {
-      socket.off('chat.message', handleNewMessage);
-    };
-  }, [messages, socket]); 
+      socket.off('chat.message', handleNewMessage)
+    }
+  }, [messages, socket])
 
   const handleFormSubmit = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     if (message.trim()) {
       socket.emit('chat.message', {
         id: myId,
         message
-      });
-      updateMessage('');
+      })
+      updateMessage('')
     }
-  };
+  }
 
-  const handleInputChange = (event) => updateMessage(event.target.value);
+  const handleInputChange = (event) => updateMessage(event.target.value)
 
   return (
-    <main className="container">
-        <ul className="list">
-            { messages.map((m, index) => (
-                <li
-                    className={`list__item list__item--${m.id === myId ? 'mine' : 'other'}`}
-                    key={index}
-                >
-                    <span className={`message message--${m.id === myId ? 'mine' : 'other'}`}>
-                        { m.message }
-                    </span>
-                </li>
-            ))}
-        </ul>
-        <form className="form" onSubmit={handleFormSubmit}>
-            <input
-                className="form__field"
-                onChange={handleInputChange}
-                placeholder="Digite sua mensagem aqui"
-                type="text"
-                value={message}
-            />
-        </form>
-    </main>
-)
+    <Container>
+      <ChatContainer>
+        {messages.map((m, index) => (
+          m.id === myId ? (
+            <MessageItem key={index}>
+              <span>
+                {m.message}
+              </span>
+            </MessageItem>
+          ) : (
+            <ReceivedMessageItem key={index}>
+              <span>{m.message}</span>
+            </ReceivedMessageItem>
+          )
+        ))}
+      </ChatContainer>
+      <MessageInputForm onSubmit={handleFormSubmit}>
+        <FormField
+          onChange={handleInputChange}
+          placeholder="Digite sua mensagem aqui"
+          type="text" formAction=""
+          value={message}
+        />
+      </MessageInputForm>
+    </Container>
+  )
 }
 
 export default Chat
