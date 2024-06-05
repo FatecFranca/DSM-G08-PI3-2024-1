@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import './configs/websockets'
 import { env } from './configs/env'
 
 import app from './configs/server'

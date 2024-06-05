@@ -21,6 +21,7 @@ io.on('connection', (socket) => {
     try {
       payload = validToken(token)
     } catch (error) {
+      console.log('Invalid token')
       return ack({
         message: 'Invalid token',
         status: 401
@@ -29,6 +30,7 @@ io.on('connection', (socket) => {
 
     const chat = await chatModel.findById(chatId)
     if (!chat) {
+      console.log('Chat not found')
       return ack({
         message: 'Chat not found',
         status: 404
@@ -37,6 +39,7 @@ io.on('connection', (socket) => {
     
     const inChat = userInChat(chat.patient.toString(), chat.attendant?.toString(), payload)
     if (!inChat) {
+      console.log('User not in chat')
       return ack({
         message: 'User not in chat',
         status: 401

@@ -37,6 +37,11 @@ app.use((error: any, req: Request, res: Response, next: NextFunction) => {
 })
 
 const server = http.createServer(app)
-const io = new Server(server)
+const io = new Server(server, {
+  cors: {
+    origin: '*'
+  }
+})
+
 export { io }
 export default server

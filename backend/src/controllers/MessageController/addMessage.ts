@@ -17,7 +17,6 @@ export const addMessage = async (req: Request, res: Response) => {
   }
 
   const { message } = zodBodySchema.parse(req.body)
-
   const chatId = req.params.chatId
   const chat = await chatModel.findById(chatId)
   if (!chat) {

@@ -15,9 +15,12 @@ export const Container = styled.main`
 export const ChatContainer = styled.ul`
   flex: 1;
   padding: 1rem;
+  overflow-y: auto;
 `
 
 export const MessageItem = styled.li`
+  display: flex;
+  justify-content: flex-end;
   list-style: none;
   
   span {
@@ -32,6 +35,9 @@ export const MessageItem = styled.li`
 `
 
 export const ReceivedMessageItem = styled(MessageItem)`
+  display: flex;
+  justify-content: flex-start;
+
   span {
     background: #89ddff;
     border-color: #1abeff;
