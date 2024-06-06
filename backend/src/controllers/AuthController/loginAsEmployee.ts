@@ -31,7 +31,7 @@ export const loginAsEmployee = async (req: Request, res: Response) => {
     throw new NotFoundError('Employee not found', { email })
   }
 
-  const token = jwt.sign({ id: isEmployee._id, role: isEmployee.role }, env.JWT_SECRET, { expiresIn: '1d' })
+  const token = jwt.sign({ id: isEmployee._id, role: isEmployee.role, name: user.name }, env.JWT_SECRET, { expiresIn: '1d' })
   
   return res.status(200).json({
     employee: {

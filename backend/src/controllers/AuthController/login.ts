@@ -29,7 +29,7 @@ export const login = async (req: Request, res: Response) => {
     throw AppError.unauthorized('Invalid password')
   }
   
-  const token = await jwt.sign({ id: user._id, role: RoleEnum.USER }, env.JWT_SECRET, { expiresIn: '1d' })
+  const token = await jwt.sign({ id: user._id, role: RoleEnum.USER, name: user.name }, env.JWT_SECRET, { expiresIn: '1d' })
 
   return res.status(200).json({
     token,

@@ -10,6 +10,7 @@ declare global {
       payload?: {
         id: string;
         role: RoleEnum;
+        name: string;
       };
     }
   }
@@ -39,6 +40,7 @@ export const authenticated = async (req: Request, res: Response, next: NextFunct
     const payload = jwt.verify(tokenValue, env.JWT_SECRET) as {
       id: string,
       role: RoleEnum
+      name: string
     }
     
     req.payload = payload
