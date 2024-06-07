@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import healthcare from '../../../assets/healthcare.png'
 import { Container } from './styles'
+import Sidebar from '../sidebar/Sidebar'
 
 const Dashboard = () => {
   const chatsToAttend = [
@@ -10,12 +11,14 @@ const Dashboard = () => {
   ];
 
   return (
-    <main className="dashboard">
+    <Container className="dashboard">
       <div className="dashboard__wrapper">
         <Sidebar /> {/* Renderizando a Sidebar aqui */}
         <div className="dashboard__container">
           <div className="dashboard__title">
-            <img src={healthcare} alt="Hello" />
+            <Image src={healthcare} alt="Hello" 
+              width={50} height={0} objectFit="contain"
+            />
             <div className="dashboard__greeting">
               <h1>Olá, atendente</h1>
               <p>Bem vindo ao seu Painel</p>
@@ -60,7 +63,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-    </main>
+    </Container>
   );
 };
 
