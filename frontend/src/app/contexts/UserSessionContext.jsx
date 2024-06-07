@@ -62,7 +62,10 @@ export const UserSessionProvider = ({ children }) => {
   }, [token])
 
   useEffect(() => {
-    if (!token) return
+    if (!token) {
+      api.defaults.headers.Authorization = null
+      return
+    }
     localStorage.setItem(tokenKey, token)
     api.defaults.headers.Authorization = `Bearer ${token}`
   }, [token])
