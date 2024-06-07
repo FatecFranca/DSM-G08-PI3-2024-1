@@ -7,13 +7,3 @@ export const api = axios.create({
     'Content-Type': 'application/json',
   },
 })
-
-api.interceptors.request.use(async (request) => {
-  const session = await getSession()
-  console.log('session', session)
-  if (session && session.status === 'authenticated') {
-    request.headers.Authorization = `Bearer ${session.data.user.apiToken}`
-  }
-
-  return request
-})

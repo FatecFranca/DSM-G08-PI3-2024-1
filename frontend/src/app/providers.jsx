@@ -1,12 +1,12 @@
 'use client'
-import { SessionProvider } from 'next-auth/react'
 import { GlobalStyles } from './GlobalStyles'
+import { UserSessionProvider } from './contexts/UserSessionContext'
 
 export const Providers = ({ children }) => {
   return (
-    <SessionProvider>
+    <UserSessionProvider>
       <GlobalStyles />
-        {children}
-    </SessionProvider>
+      {children}
+    </UserSessionProvider>
   )
 }

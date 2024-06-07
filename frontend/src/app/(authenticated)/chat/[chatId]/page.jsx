@@ -12,26 +12,22 @@ socket.on('connect', () => console.log('[IO] Connect => A new connection has bee
 
 const Chat = ({ params: { chatId } }) => {
 
-  const { apiToken, role } = useAuthenticated()
+  const { role, token } = useAuthenticated()
   const [chat, setChat] = useState(null)
 
   const [messageInput, setMessageInput] = useState("")
   const [messages, setMessages] = useState([])
 
   useEffect(() => {
-    api.get(`/chats/${chatId}`, {
-      headers: {
-        Authorization: `Bearer ${apiToken}`
-      }
-    })
+    api.get(`/chats/${chatId}`)
       .then(({ data }) => {
         setChat(data)
         setMessages(data.messages)
       }).catch(console.log)
-  }, [chatId, apiToken])
+  }, [chatId])
 
   useEffect(() => {
-    socket.emit('chat.enter', { token: `Bearer ${apiToken}`, chatId }, (response) => {
+    socket.emit('chat.enter', { token: `Bearer ${token}`, chatId }, (response) => {
       socket.on(`chat.message.created`, (data) => {
         if (chatId === data.chatId) {
           setMessages((prevMessages) => {
@@ -44,16 +40,12 @@ const Chat = ({ params: { chatId } }) => {
         }
       })
     })
-  }, [apiToken, chatId])
+  }, [token, chatId])
 
   const handleFormSubmit = async (event) => {
     event.preventDefault()
     await api.post(`/chats/${chatId}/messages`, {
       message: messageInput
-    }, {
-      headers: {
-        Authorization: `Bearer ${apiToken}`
-      }
     })
 
     setMessageInput("")
@@ -93,28 +85,3 @@ const Chat = ({ params: { chatId } }) => {
 }
 
 export default Chat
-
-/* Chat response reference
-{
-    "_id": "665f1c2e905dc6ecba5b8211",
-    "patient": "665f0b68e963c01b414d898e",
-    "messages": [
-        {
-            "user": "665f0b68e963c01b414d898e",
-            "message": "Bom dia, preciso de ajuda para marcar um exame. E conferir oque preciso na hora da consulta",
-            "sentWhen": "2024-06-04T14:21:01.028Z",
-            "_id": "665f22cd63e7940fcf2bfc4f"
-        },
-        {
-            "user": "665f19d7db7b354113a11243",
-            "message": "Bom dia, com qual medico ou tipo de especialista precisa ser atendida?",
-            "sentWhen": "2024-06-04T14:22:53.828Z",
-            "_id": "665f233d63e7940fcf2bfc54"
-        }
-    ],
-    "createdAt": "2024-06-04T13:52:46.982Z",
-    "__v": 2,
-    "attendant": "665f19d7db7b354113a11243"
-}
-
-*/

@@ -1,36 +1,35 @@
 'use client'
-import { signIn, useSession } from "next-auth/react"
+import { useUserSession } from "@/app/hooks/useUserSession"
 import Image from 'next/image'
-import { redirect, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import styles from './styles.module.css'
 
 
 
 function LoginForm() {
-  const session = useSession()
-  
+  const { login, session, loading } = useUserSession()
+  console.log('loginPage', session, loading)
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const router = useRouter()
   const handleEmailChange = (e) => {
     setEmail(e.target.value)
   }
-  
+
   const handlePasswordChange = (e) => {
     setPassword(e.target.value)
   }
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault()
-    
+
     if (!email.trim() || !password.trim()) return
-    
-    await signIn('credentials', {
-      email, password, asEmployee: false
-    })
-    
-    return router.replace('/')
+
+    await login(email, password)
+
+    // return router.replace('/')
   }
 
   // if (session.status === 'authenticated') {
