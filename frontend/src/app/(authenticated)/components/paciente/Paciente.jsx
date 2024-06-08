@@ -1,14 +1,25 @@
+'use client'
+import { api } from '@/api'
+import { useUserSession } from '@/app/hooks/useUserSession'
 import Image from 'next/image'
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
 import healthcare from '../../../assets/healthcare.png'
-import Sidebar from '../sidebar/Sidebar'
+import Sidebar from './sidebar/Sidebar'
 import { Container } from './styles'
 
 const Dashboard = () => {
-  const chatsToAttend = [
-    { id: 1, name: "Chat 1", date: "01/06/2024" },
-    { id: 2, name: "Chat 2", date: "01/06/2024" },
-    { id: 3, name: "Chat 3", date: "01/06/2024" },
-  ]
+  const userSession = useUserSession()
+  const [chats, setChats] = useState([])
+
+  useEffect(() => {
+    api.get(`/chats/patient/${userSession.session.id}`)
+      .then(({ data }) => {
+        console.log('userId', userSession.session.id)
+        console.log(data)
+        setChats(data)
+      })
+  }, [userSession.session.id])
 
   return (
     <Container className="dashboard">
@@ -29,7 +40,7 @@ const Dashboard = () => {
               <i className="fa fa-history fa-2x text-lightblue"></i>
               <div className="card_inner">
                 <p className="text-primary-p">Atendimentos anteriores</p>
-                <span className="font-bold text-title"> 558 atendimentos</span>
+                <span className="font-bold text-title"> {chats.length} atendimentos</span>
               </div>
             </div>
           </div>
@@ -38,11 +49,11 @@ const Dashboard = () => {
             <div className="chat-card_inner">
               <p className="text-primary-p">Chats anteriores</p>
               <ul className="chat-list">
-                {chatsToAttend.map((chat) => (
-                  <li key={chat.id} className="chat-item">
-                    <span className="chat-name">{chat.name}</span>
-                    <span className="chat-date">{chat.date}</span>
-                    <button className="view-button">Visualizar</button>
+                {chats.map((chat) => (
+                  <li key={chat._id} className="chat-item">
+                    <span className="chat-name">Chat {chat._id.slice(0, 3)} ({new Date(chat.createdAt).toLocaleDateString('pt-BR')})</span>
+                    <span className="chat-date">Iniciado em {new Date(chat.createdAt).toLocaleDateString('pt-BR')}</span>
+                    <Link href={`/chat/${chat._id}`} className="view-button">Visualizar</Link>
                   </li>
                 ))}
               </ul>

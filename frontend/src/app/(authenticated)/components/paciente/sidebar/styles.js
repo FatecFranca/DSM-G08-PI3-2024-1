@@ -10,6 +10,16 @@ export const Container = styled.aside`
   height: 100vh;
   position: fixed;
   width: 250px;
+  .sidebar__button {
+    color: inherit;
+    background-color: inherit;
+    text-decoration: none;
+    color: #a5aaad;
+    font-weight: 900;
+    outline: none;
+    border: none;
+    cursor: pointer;
+  }
 
   .logout__button {
     background: transparent;

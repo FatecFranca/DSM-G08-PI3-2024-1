@@ -137,6 +137,7 @@ export const Container = styled.div`
 
   .view-button {
     background-color: #4CAF50;
+    text-decoration: none;
     color: white;
     padding: 5px 10px;
     border: none;
