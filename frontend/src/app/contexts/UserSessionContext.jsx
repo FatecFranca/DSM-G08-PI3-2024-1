@@ -77,13 +77,12 @@ export const UserSessionProvider = ({ children }) => {
   }
 
   const loginAsEmployee = async (email, password) => {
-    const session = await api.post('/auth/login-employee', { email, password })
-
-    setToken(session.token)
+    const { data } = await api.post('/auth/login-employee', { email, password })
+    setToken(data.token)
   }
 
   const logout = async () => {
-    window.localStorage.removeItem('jwt')
+    window.localStorage.removeItem(tokenKey)
     setToken(null)
   }
 

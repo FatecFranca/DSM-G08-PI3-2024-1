@@ -30,9 +30,17 @@ export const loginAsEmployee = async (req: Request, res: Response) => {
   if (!isEmployee) {
     throw new NotFoundError('Employee not found', { email })
   }
+  const payload = {
+    id: isEmployee._id,
+    role: isEmployee.role,
+    name: user.name
+  }
 
-  const token = jwt.sign({ id: isEmployee._id, role: isEmployee.role, name: user.name }, env.JWT_SECRET, { expiresIn: '1d' })
+  const token = jwt.sign(payload, env.JWT_SECRET, { expiresIn: '1d' })
   
+
+  const decodedPayload = jwt.verify(token, env.JWT_SECRET)
+
   return res.status(200).json({
     employee: {
       employeeId: isEmployee._id,

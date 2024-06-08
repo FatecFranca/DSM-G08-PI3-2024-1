@@ -1,15 +1,14 @@
 'use client'
 import { useUserSession } from "@/app/hooks/useUserSession"
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import styles from './styles.module.css'
 
 
 
 function LoginForm() {
-  const { login, session, loading } = useUserSession()
-  console.log('loginPage', session, loading)
+  const { login, loginAsEmployee, session, loading } = useUserSession()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -29,12 +28,22 @@ function LoginForm() {
 
     await login(email, password)
 
-    // return router.replace('/')
+    return router.replace('/')
   }
 
-  // if (session.status === 'authenticated') {
-  //   return redirect('/')
-  // }
+  const handleLoginAsEmployee = async (e) => {
+    e.preventDefault()
+
+    if (!email.trim() || !password.trim()) return
+
+    await loginAsEmployee(email, password)
+
+    return router.replace('/')
+  }
+
+  if (session) {
+    return redirect('/')
+  }
 
   return (
     <div className={styles.container}>
@@ -60,7 +69,9 @@ function LoginForm() {
             Acesse com o Google
           </button>
 
-          <button type="submit" className={styles.buttonFuncionario}>
+          <button
+            onClick={handleLoginAsEmployee}
+            type="submit" className={styles.buttonFuncionario}>
             <Image
               src="/images/saudeON.png"
               alt=""

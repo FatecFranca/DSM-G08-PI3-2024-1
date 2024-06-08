@@ -1,8 +1,16 @@
+'use client'
+import { useUserSession } from "@/app/hooks/useUserSession"
 import Image from "next/image"
+import Link from "next/link"
 import logo from "../../../assets/logo.png"
 import { Container } from "./styles"
 
-const Sidebar = () => {
+const Sidebar = ({ lastChat }) => {
+  const { logout } = useUserSession()
+  const handleSignOut = async () => {
+    await logout()
+  }
+
   return (
     <Container id="sidebar">
       <div className="sidebar__title">
@@ -25,7 +33,7 @@ const Sidebar = () => {
         </div>
         <div className="sidebar__link">
           <i className="fa-brands fa-rocketchat"></i>
-          <a href="#">Entrar no Chat</a>
+          <Link href={lastChat ? `/chat/${lastChat._id}` : '#'}>Entrar no Chat</Link>
         </div>
         <div className="sidebar__link">
           <i className="fa fa-archive"></i>
@@ -33,7 +41,9 @@ const Sidebar = () => {
         </div>
         <div className="sidebar__logout">
           <i className="fa fa-power-off"></i>
-          <a href="#">Sair</a>
+          <button
+            onClick={handleSignOut}
+            className="logout__button" href="#">Sair</button>
         </div>
       </div>
     </Container>

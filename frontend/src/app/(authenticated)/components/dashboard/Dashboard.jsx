@@ -1,22 +1,53 @@
+'use client'
+import { api } from '@/api'
+import { useUserSession } from '@/app/hooks/useUserSession'
 import Image from 'next/image'
+import { useEffect, useState } from 'react'
 import healthcare from '../../../assets/healthcare.png'
-import { Container } from './styles'
 import Sidebar from '../sidebar/Sidebar'
+import { Container } from './styles'
 
+//TODO: Filter opened chats so that only the ones that are not attended are shown. And create area to see accepted chats
 const Dashboard = () => {
-  const chatsToAttend = [
-    { id: 1, name: "Paciente 1" },
-    { id: 2, name: "Paciente 2" },
-    { id: 3, name: "Paciente 3" },
-  ];
+  const userSession = useUserSession()
+  const [lastOpenedChat, setLastOpenedChat] = useState(null)
+  const [openedChatsQty, setOpenedChatsQty] = useState(0)
+  const [chats, setChats] = useState([])
+
+  const handleAcceptChat = async (chatId) => {
+    await api.put(`/chats/${chatId}/accept`)
+  }
+
+  useEffect(() => {
+    api.get('/chats')
+      .then(({ data }) => {
+        setChats(data)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }, [])
+
+  useEffect(() => {
+    if (chats) {
+      setOpenedChatsQty(chats.filter(chat => !chat.attendant).length)
+    }
+  }, [chats])
+
+  useEffect(() => {
+    const employeeChats = chats.filter(chat => chat.attendant === userSession.session.id)
+    if (employeeChats.length > 0) {
+      setLastOpenedChat(employeeChats[0])
+    }
+  }, [chats, userSession.session.id])
 
   return (
     <Container className="dashboard">
       <div className="dashboard__wrapper">
-        <Sidebar /> {/* Renderizando a Sidebar aqui */}
+        <Sidebar lastChat={lastOpenedChat} /> {/* Renderizando a Sidebar aqui */}
         <div className="dashboard__container">
           <div className="dashboard__title">
-            <Image src={healthcare} alt="Hello" 
+            <Image src={healthcare} alt="Hello"
               width={50} height={0} objectFit="contain"
             />
             <div className="dashboard__greeting">
@@ -29,14 +60,14 @@ const Dashboard = () => {
               <i className="fa fa-history fa-2x text-lightblue"></i>
               <div className="card_inner">
                 <p className="text-primary-p">Total de atendimentos</p>
-                <span className="font-bold text-title"> 558 atendimentos</span>
+                <span className="font-bold text-title"> {chats.length} atendimentos</span>
               </div>
             </div>
             <div className="card">
               <i className="fa fa-users fa-2x text-green"></i>
               <div className="card_inner">
                 <p className="text-primary-p">Atendimentos em aberto</p>
-                <span className="font-bold text-title"> 10 pessoas na fila </span>
+                <span className="font-bold text-title"> {openedChatsQty} pessoas na fila </span>
               </div>
             </div>
             <div className="card">
@@ -52,10 +83,12 @@ const Dashboard = () => {
             <div className="chat-card_inner">
               <p className="text-primary-p">Chats para atender</p>
               <ul className="chat-list">
-                {chatsToAttend.map((chat) => (
+                {chats.map((chat) => (
                   <li key={chat.id} className="chat-item">
-                    <span className="chat-name">{chat.name}</span>
-                    <button className="accept-button">Aceitar</button>
+                    <span className="chat-name">{chat.patient.name}</span>
+                    <button
+                      onClick={() => handleAcceptChat(chat._id)}
+                      className="accept-button">Aceitar</button>
                   </li>
                 ))}
               </ul>
@@ -64,7 +97,7 @@ const Dashboard = () => {
         </div>
       </div>
     </Container>
-  );
-};
+  )
+}
 
-export default Dashboard;
+export default Dashboard

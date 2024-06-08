@@ -11,6 +11,16 @@ export const Container = styled.aside`
   position: fixed;
   width: 250px;
 
+  .logout__button {
+    background: transparent;
+    color: #e65061;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+    outline: none;
+    border: none;
+  }
+
   .sidebar__img {
     display: flex;
     width: 100%;
