@@ -38,7 +38,7 @@ function LoginForm() {
 
     await loginAsEmployee(email, password)
 
-    return router.replace('/')
+    // return router.replace('/')
   }
 
   if (session) {
