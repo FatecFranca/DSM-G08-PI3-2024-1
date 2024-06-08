@@ -7,7 +7,7 @@ import { employeeModel } from './models/EmployeeModel'
 import { RoleEnum } from './types/RoleEnum'
 import { userModel } from './models/UserModel'
 
-mongoose.connect('mongodb://localhost:27017/saudeOn')
+mongoose.connect(env.DATABASE_URL)
   .then(async () => {
     const hasAdmin = await employeeModel.findOne({
       role: RoleEnum.ADMIN
