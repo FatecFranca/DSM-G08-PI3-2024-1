@@ -9,7 +9,7 @@
     "test": "jest",
     "test:watch": "jest --runInBand --watchAll",
     "clean": "rimraf dist",
-    "build": "npm run clean && npx tsc"
+    "build": "npm run clean && tsc"
   },
   "keywords": [],
   "author": "",
