@@ -15,7 +15,7 @@ if (environment === 'dev' || environment === 'production') {
   throw Error(`Environment not supported: ${environment}`)
 }
 
-const ENVZodType = environment === 'dev'? z.union([z.literal('dev'), z.literal('production')]) : z.literal('test')
+const ENVZodType = environment === 'dev' || environment === 'production' ? z.union([z.literal('dev'), z.literal('production')]) : z.literal('test')
 export const envSchema = z.object({
   PORT: z.string().default('8080'),
   DATABASE_URL: z.string(),
