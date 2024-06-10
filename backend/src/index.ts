@@ -7,6 +7,7 @@ import { employeeModel } from './models/EmployeeModel'
 import { RoleEnum } from './types/RoleEnum'
 import { userModel } from './models/UserModel'
 
+console.log(env)
 mongoose.connect(env.DATABASE_URL)
   .then(async () => {
     const hasAdmin = await employeeModel.findOne({
@@ -43,3 +44,5 @@ mongoose.connect(env.DATABASE_URL)
   .catch(err => {
     console.log(err)
   })
+
+export default app

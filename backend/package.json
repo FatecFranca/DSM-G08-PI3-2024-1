@@ -2,13 +2,10 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "builds": [
-    { "src": "package.json", "use": "@vercel/node"}
-  ],
+  "main": "./dist/index.js",
   "scripts": {
-    "start": "ts-node-dev src/index.ts --transpile-only",
-    "dev": "ts-node-dev src/index.ts",
+    "start": "node ./dist/index.js",
+    "dev": "tsnd src/index.ts --transpile-only",
     "test": "jest",
     "test:watch": "jest --runInBand --watchAll",
     "clean": "rimraf dist",
