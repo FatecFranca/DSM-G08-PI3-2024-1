@@ -7,7 +7,7 @@ import { ChatContainer, Container, FormField, MessageInputForm, MessageItem, Rec
 
 const myId = "testemsg"
 
-const socket = io('http://localhost:8080')
+const socket = io( process.env.NEXT_PUBLIC_API_URL|| 'http://localhost:8080')
 socket.on('connect', () => console.log('[IO] Connect => A new connection has been established'))
 
 const Chat = ({ params: { chatId } }) => {
