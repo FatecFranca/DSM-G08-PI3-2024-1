@@ -2,12 +2,19 @@
 import { api } from '@/api'
 import Image from 'next/image'
 import { redirect, useRouter, useSearchParams } from "next/navigation"
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import stylesRegistro from './stylesRegistro2.module.css'
 
 
+export default function RegistrationForm2Page() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <RegistrationForm2 />
+        </Suspense>
+    )
+}
 
-export default function RegistrationForm2() {
+export function RegistrationForm2() {
     const [cardiorespiratoria, setCardiorespiratoria] = useState('')
     const [cirurgia, setCirurgia] = useState('')
     const [historico, setHistorico] = useState('')
