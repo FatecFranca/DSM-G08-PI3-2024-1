@@ -3,7 +3,7 @@ import { useUserSession } from "@/app/hooks/useUserSession"
 import Image from 'next/image'
 import { redirect, useRouter } from 'next/navigation'
 import { useState } from 'react'
-import logoSaudeOm from '../../assets/logosaudeON.png'
+import logoSaudeOm from '../../assets/logoSaudeOn.png'
 import styles from './styles.module.css'
 
 
