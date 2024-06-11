@@ -3,6 +3,7 @@ import { useUserSession } from "@/app/hooks/useUserSession"
 import Image from 'next/image'
 import { redirect, useRouter } from 'next/navigation'
 import { useState } from 'react'
+import logoSaudeOm from '../../assets/logosaudeON.png'
 import styles from './styles.module.css'
 
 
@@ -49,7 +50,7 @@ function LoginForm() {
     <div className={styles.container}>
       <div className={styles.imageContainer}>
         <Image
-          src="/images/logosaudeON.png"
+          src={logoSaudeOm}
           alt=""
           width={550}
           height={550}
