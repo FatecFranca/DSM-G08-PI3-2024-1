@@ -6,16 +6,24 @@ import { useEffect, useState } from 'react'
 import healthcare from '../../../assets/healthcare.png'
 import Sidebar from '../sidebar/Sidebar'
 import { Container } from './styles'
+import { useRouter } from 'next/navigation'
 
 //TODO: Filter opened chats so that only the ones that are not attended are shown. And create area to see accepted chats
 const Dashboard = () => {
   const userSession = useUserSession()
+  const router = useRouter()
   const [lastOpenedChat, setLastOpenedChat] = useState(null)
   const [openedChatsQty, setOpenedChatsQty] = useState(0)
   const [chats, setChats] = useState([])
 
   const handleAcceptChat = async (chatId) => {
     await api.put(`/chats/${chatId}/accept`)
+
+    await handleEnterChat(chatId)
+  }
+
+  const handleEnterChat = async (chatId) => {
+    router.push(`/chat/${chatId}`)
   }
 
   useEffect(() => {
@@ -83,12 +91,18 @@ const Dashboard = () => {
             <div className="chat-card_inner">
               <p className="text-primary-p">Chats para atender</p>
               <ul className="chat-list">
-                {chats.map((chat) => (
+                {chats.filter(chat => chat.attendant === userSession.session.id || !chat.attendant).map((chat) => (
                   <li key={chat.id} className="chat-item">
                     <span className="chat-name">{chat.patient.name}</span>
-                    <button
-                      onClick={() => handleAcceptChat(chat._id)}
-                      className="accept-button">Aceitar</button>
+                    {chat.attendant === userSession.session.id? (
+                      <button
+                        onClick={() => handleEnterChat(chat._id)}
+                        className="accept-button">Entrar</button>
+                    ) :(
+                      <button
+                        onClick={() => handleAcceptChat(chat._id)}
+                        className="accept-button">Aceitar</button>
+                    )}
                   </li>
                 ))}
               </ul>
