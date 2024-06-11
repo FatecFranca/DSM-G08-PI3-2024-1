@@ -2,10 +2,10 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "scripts": {
-    "start": "ts-node-dev src/index.ts --transpile-only",
-    "dev": "ts-node-dev src/index.ts",
+    "start": "node ./dist/index.js",
+    "dev": "tsnd src/index.ts --transpile-only",
     "test": "jest",
     "test:watch": "jest --runInBand --watchAll",
     "clean": "rimraf dist",
@@ -29,10 +29,10 @@
     "eslint": "^8.57.0",
     "jest": "^29.7.0",
     "ts-jest": "^29.1.2",
-    "ts-node-dev": "^2.0.0",
-    "typescript": "^5.4.5"
-  },
-  "dependencies": {
+    "ts-node-dev": "^2.0.0"
+    },
+    "dependencies": {
+    "typescript": "^5.4.5",
     "@fnando/cpf": "^1.0.2",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",

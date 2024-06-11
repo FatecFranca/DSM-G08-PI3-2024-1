@@ -75,7 +75,7 @@ function userInChat(patient: string, attendant: string|undefined, payload: Requi
   let inChat = false
   if (payload.role === RoleEnum.USER) {
     inChat = patient === payload.id
-  } else if (payload.role === RoleEnum.EMPLOYEE) {
+  } else if (payload.role === RoleEnum.EMPLOYEE || payload.role === RoleEnum.ADMIN) {
     inChat = attendant === payload.id
   }
 

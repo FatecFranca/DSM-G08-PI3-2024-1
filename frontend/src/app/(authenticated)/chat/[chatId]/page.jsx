@@ -1,16 +1,26 @@
 'use client'
 import { api } from "@/api"
 import { useAuthenticated } from "@/app/hooks/useAuthenticated"
-import { useEffect, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import io from 'socket.io-client'
 import { ChatContainer, Container, FormField, MessageInputForm, MessageItem, ReceivedMessageItem } from "./styles"
 
 const myId = "testemsg"
 
-const socket = io('http://localhost:8080')
-socket.on('connect', () => console.log('[IO] Connect => A new connection has been established'))
+function waitAcknowledge(socket, event) {
+  return new Promise((resolve) => {
+    socket.on(event, (data) => {
+      resolve(data)
+    })
+  }) 
+}
+const Chat = ({ chatId }) => {
+  const socket = io(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080')
 
-const Chat = ({ params: { chatId } }) => {
+  useEffect(() => {
+    waitAcknowledge(socket, 'connect')
+      .then(data => console.log('connected', data))
+  }, [])
 
   const { role, token } = useAuthenticated()
   const [chat, setChat] = useState(null)
@@ -84,4 +94,11 @@ const Chat = ({ params: { chatId } }) => {
   )
 }
 
-export default Chat
+const ChatPage = ({ params: { chatId } }) => {
+
+  return <Suspense fallback={<div>Loading...</div>}>
+    <Chat chatId={chatId} />
+  </Suspense>
+}
+
+export default ChatPage

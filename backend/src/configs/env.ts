@@ -1,8 +1,9 @@
 import dotenv from 'dotenv'
 import { string, z } from 'zod'
 //TODO: Create variable to create admin user with default password and email. OPTIONAL
+
 const environment = process.env.NODE_ENV || 'dev'
-if (environment === 'dev') {
+if (environment === 'dev' || environment === 'production') {
   dotenv.config({
     path: '.env',
   })
@@ -11,10 +12,10 @@ if (environment === 'dev') {
     path: '.env.test',
   })
 } else {
-  throw Error('Environment not supported')
+  throw Error(`Environment not supported: ${environment}`)
 }
 
-const ENVZodType = environment === 'dev'? z.literal('dev') : z.literal('test')
+const ENVZodType = environment === 'dev' || environment === 'production' ? z.union([z.literal('dev'), z.literal('production')]) : z.literal('test')
 export const envSchema = z.object({
   PORT: z.string().default('8080'),
   DATABASE_URL: z.string(),
