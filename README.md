@@ -4,7 +4,7 @@ Repositório do GRUPO 08 do Projeto Interdisciplinar do 3º semestre DSM 2024/1.
 Inserindo o link do nosso layout no figma desenvolvido por Leonardo Victor. Layout: https://www.figma.com/file/uju9uhFdj2umnwT2Pog26y/P.I-3-SEMESTRE?type=design&node-id=0-1&mode=design&t=VTbxjJ49sVkEZe3J-0
 
 # Projeto SaudeOn
-Resumo do projeto (preencher)
+O projeto em si está voltado para a criação de um chatbot que proporciona atendimento online aos pacientes. Essa solução visou criar uma solução que permitisse, via chatbot, a conversa direta do paciente com médicos e atendentes, sem a necessidade de se deslocar até o local. Nosso foco está na simplificação e agilização do processo de agendamento de consultas, consulta de horários e obtenção de informações sobre exames. O chatbot visou complementar e facilitar os processos tradicionais de atendimento, proporcionando uma solução mais rápida e acessível para os pacientes.
 
 ## Estrutura do Projeto
 
