@@ -6,7 +6,6 @@ import { DuplicatedIndexError } from '../../errors/DuplicatedIndexError'
 
 export const createUser = async (req: Request, res: Response) => {
   const body = req.body
-  console.log(body)
   
   const userData = zodUserSchema.omit({
     _id: true
