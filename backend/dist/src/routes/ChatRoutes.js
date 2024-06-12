@@ -1,0 +1,16 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const MessageController_1 = require("../controllers/MessageController");
+const authenticated_1 = require("../middlewares/authenticated");
+const authorize_1 = require("../middlewares/authorize");
+const AuthorizationPolicy_1 = require("../types/AuthorizationPolicy");
+const chatRoutes = (0, express_1.Router)();
+chatRoutes.put('/:chatId/accept', authenticated_1.authenticated, (0, authorize_1.authorize)(AuthorizationPolicy_1.AuthorizationPolicy.allEmployees()), MessageController_1.acceptChat);
+chatRoutes.post('/', authenticated_1.authenticated, (0, authorize_1.authorize)(AuthorizationPolicy_1.AuthorizationPolicy.onlyUsers()), MessageController_1.createChat);
+chatRoutes.get('/', authenticated_1.authenticated, (0, authorize_1.authorize)(AuthorizationPolicy_1.AuthorizationPolicy.allEmployees()), MessageController_1.getChats);
+chatRoutes.get('/:chatId', authenticated_1.authenticated, MessageController_1.getChatById);
+chatRoutes.get('/attendant/:attendantId', MessageController_1.getChatsByAttendant);
+chatRoutes.get('/patient/:userId', authenticated_1.authenticated, MessageController_1.getChatsByUser);
+chatRoutes.post('/:chatId/messages', authenticated_1.authenticated, MessageController_1.addMessage);
+exports.default = chatRoutes;

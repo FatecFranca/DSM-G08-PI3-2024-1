@@ -23,6 +23,7 @@ export function RegistrationForm2() {
     const userId = useSearchParams().get('userId')
     const token = localStorage.getItem('token')
     const router = useRouter()
+    console.log('userId:', userId, token)
 
     if (!userId || !token) {
         return redirect('/login')
@@ -50,7 +51,6 @@ export function RegistrationForm2() {
                     Authorization: `Bearer ${token}`
                 }
             })
-            console.log(response.data)
             localStorage.removeItem('token')
             router.push('/login')
         } catch (error) {

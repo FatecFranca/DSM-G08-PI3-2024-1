@@ -59,17 +59,16 @@ export default function RegistrationForm() {
             })
 
             try {
-                const loginResponse = await api.post('/auth', {
+                
+                const loginResponse = await api.post('/auth/login', {
                     email, password: senha
                 })
 
-                localStorage.setItem('token', loginResponse.data.token)
+                await localStorage.setItem('token', loginResponse.data.token)
+                router.push('/registro2?userId=' + response.data._id)
             } catch (error) {
                 router.push('/login')
             }
-
-
-            router.push('/registro2?userId=' + response.data._id)
         } catch (error) {
             console.log('Erro ao enviar dados:', error)
         }
